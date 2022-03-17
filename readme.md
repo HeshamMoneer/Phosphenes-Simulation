@@ -5,5 +5,5 @@
 4. run **pipenv install**
 5. run **pipenv run python3 phosphenesSim.py**  
 OR alternatively  
-5. run **pipenv shell** [to exit it type exit or use ctrl+d]
-6. run **python3 phosphenesSim.py**
+6. run **pipenv shell** [to exit it type exit or use ctrl+d]
+7. run **python3 phosphenesSim.py**
