@@ -3,7 +3,5 @@
 2. make sure to have python3 and pip commands on your local machine terminal
 3. run **pip install --user pipenv**
 4. run **pipenv install**
-5. run **pipenv run python3 phosphenesSim.py**  
-OR alternatively  
-6. run **pipenv shell** [to exit it type exit or use ctrl+d]
-7. run **python3 phosphenesSim.py**
+5. run **pipenv shell** to spawn a shell in the virtual env of the project; exit:ctrl+d
+6. run **python3 [Any].py**
