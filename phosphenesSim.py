@@ -2,12 +2,15 @@ import cv2
 import numpy as np
 import colorSampler as cS
 from gaussianBlur import blur
+from cropper import crop
 
 def pSim(imgNumber, width = 32, height = 32, noColors = 16):
     # create color samples array
     colorSampler = cS.colorSampler(noColors)
     # read desired image in grey scale
     img = cv2.imread('./images/img' + str(imgNumber) + '.jpg',0)
+    # crop image to be square
+    img = crop(img)
     # resize image to desired resolution
     img = cv2.resize(img, (width, height))
     # resulting image width and height
