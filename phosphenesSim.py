@@ -35,8 +35,8 @@ def pSim(imgNumber, width = 32, height = 32, noColors = 16):
     return phosphenes
 
 imgNumber = eval(input("Enter Image number: "))
-# width = eval(input("Enter Image width: "))
-# height = eval(input("Enter Image height: "))
+# width = eval(input("Enter Image width in phosphenes: "))
+# height = eval(input("Enter Image height in phosphenes: "))
 # noColors = eval(input("Enter number of colors: "))
 
 phosphenes = pSim(imgNumber)
