@@ -13,7 +13,7 @@ class colorSampler:
 
     def sample(self, color):
         index = (color/ 255) * (self.noColors - 1)
-        if(index.is_integer()): return int(self.colors[int(index)])
+        if(index.is_integer() or int(index)==len(self.colors)-1): return int(self.colors[int(index)])
         index = int(index)
         diff1 = color - self.colors[index]
         diff2 = self.colors[index + 1] - color
