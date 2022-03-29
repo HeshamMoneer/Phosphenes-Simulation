@@ -32,16 +32,20 @@ def pSim(img, width = 32, height = 32, noColors = 16):
     phosphenes = blur(phosphenes, radius)
     return phosphenes
 
-# imgNumber = eval(input("Enter Image number: "))
-# # width = eval(input("Enter Image width in phosphenes: "))
-# # height = eval(input("Enter Image height in phosphenes: "))
-# # noColors = eval(input("Enter number of colors: "))
+def main():
+    imgNumber = eval(input("Enter Image number: "))
+    # width = eval(input("Enter Image width in phosphenes: "))
+    # height = eval(input("Enter Image height in phosphenes: "))
+    # noColors = eval(input("Enter number of colors: "))
 
-# # read desired image in grey scale
-# phosphenes = cv2.imread('./images/img' + str(imgNumber) + '.jpg',0)
-# phosphenes = pSim(phosphenes)
+    # read desired image in grey scale
+    phosphenes = cv2.imread('./images/img' + str(imgNumber) + '.jpg',0)
+    phosphenes = pSim(phosphenes)
 
-# cv2.imshow("Phosphenes",phosphenes)
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
+    cv2.imshow("Phosphenes",phosphenes)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+    main()
 
