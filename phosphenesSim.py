@@ -4,11 +4,9 @@ import colorSampler as cS
 from gaussianBlur import blur
 from cropper import crop
 
-def pSim(imgNumber, width = 32, height = 32, noColors = 16):
+def pSim(img, width = 32, height = 32, noColors = 16):
     # create color samples array
     colorSampler = cS.colorSampler(noColors)
-    # read desired image in grey scale
-    img = cv2.imread('./images/img' + str(imgNumber) + '.jpg',0)
     # crop image to be square
     img = crop(img)
     # resize image to desired resolution
@@ -34,14 +32,16 @@ def pSim(imgNumber, width = 32, height = 32, noColors = 16):
     phosphenes = blur(phosphenes, radius)
     return phosphenes
 
-imgNumber = eval(input("Enter Image number: "))
-# width = eval(input("Enter Image width in phosphenes: "))
-# height = eval(input("Enter Image height in phosphenes: "))
-# noColors = eval(input("Enter number of colors: "))
+# imgNumber = eval(input("Enter Image number: "))
+# # width = eval(input("Enter Image width in phosphenes: "))
+# # height = eval(input("Enter Image height in phosphenes: "))
+# # noColors = eval(input("Enter number of colors: "))
 
-phosphenes = pSim(imgNumber)
+# # read desired image in grey scale
+# phosphenes = cv2.imread('./images/img' + str(imgNumber) + '.jpg',0)
+# phosphenes = pSim(phosphenes)
 
-cv2.imshow("Phosphenes",phosphenes)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# cv2.imshow("Phosphenes",phosphenes)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
 
