@@ -4,23 +4,23 @@ import colorSampler as cS
 from gaussianBlur import blur
 from cropper import crop
 
-def pSim(img, width = 32, height = 32, noColors = 16):
+def pSim(img, dim = 32, noColors = 16):
     # create color samples array
     colorSampler = cS.colorSampler(noColors)
     # crop image to be square
     img = crop(img)
     # resize image to desired resolution
-    img = cv2.resize(img, (width, height))
+    img = cv2.resize(img, (dim, dim))
     # resulting image width and height
-    widthWin = heightWin = 640
+    dimWin = 640
     # pixel grid that displays phosphenes
-    phosphenes = np.zeros((widthWin, heightWin, 1), dtype=np.uint8)
+    phosphenes = np.zeros((dimWin, dimWin, 1), dtype=np.uint8)
     # square pixels that will contains a phosphene
-    squareSide = widthWin//width
+    squareSide = dimWin//dim
     # phosphene radius
     radius = int(squareSide * 0.25) 
-    for x in range(0, width):
-        for y in range(0, height):
+    for x in range(0, dim):
+        for y in range(0, dim):
             color = img[y,x]
             # find the center of the corresponding phosphene cell
             xI = int(x * squareSide + squareSide/2)
