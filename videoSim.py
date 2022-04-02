@@ -1,12 +1,14 @@
 import cv2
+import colorSampler as cS
 from phosphenesSim import pSim
 import time
 
 def vSim(cap, dim = 32, noColors = 16):
+    colorSampler = cS.colorSampler(noColors)
     # get the original video FPS
     fps = cap.get(cv2.CAP_PROP_FPS)
     print("Original FPS: "+str(fps))
-    classifier = cv2.CascadeClassifier('cc.xml')
+    classifier = cv2.CascadeClassifier('hcc.xml')
     while True:
         ret,frame = cap.read()
         if(not ret): break
@@ -20,7 +22,7 @@ def vSim(cap, dim = 32, noColors = 16):
         cv2.imshow('Original', frame)
         startTime = time.time()
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        frame = pSim(frame, dim, noColors)
+        frame = pSim(img=frame, dim=dim,colorSampler=colorSampler)
         endTime = time.time()
         print('Actual FPS: '+ str(int(1/(endTime-startTime))), end='\r')
         cv2.imshow('Phosphenated', frame)

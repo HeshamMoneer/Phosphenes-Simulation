@@ -4,9 +4,9 @@ import colorSampler as cS
 from gaussianBlur import blur
 from cropper import crop
 
-def pSim(img, dim = 32, noColors = 16):
+def pSim(img, dim = 32, noColors = 16, colorSampler=None):
     # create color samples array
-    colorSampler = cS.colorSampler(noColors)
+    colorSampler = cS.colorSampler(noColors) if colorSampler == None else colorSampler
     # crop image to be square
     img = crop(img)
     # resize image to desired resolution
