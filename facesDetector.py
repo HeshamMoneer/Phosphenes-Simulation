@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 
 def detectAllFaces(img, classifier):
   bboxes = classifier.detectMultiScale(img)
@@ -16,10 +17,10 @@ def brightenFirstFace(img, classifier):
   bboxes = classifier.detectMultiScale(img)
   if len(bboxes) > 0:
     x, y, width, height = bboxes[0]
-    for xI in range(x, x+width):
-      for yI in range(y, y+height):
-        img[yI, xI] += 30
-        if img[yI, xI] > 255: img[yI, xI] = 255
+    it = np.nditer(img[y:y+height, x:x+width], op_flags=['readwrite'])
+    while not it.finished:
+      it[0] = it[0] + 30 if it[0] < 225 else 255
+      it.iternext()
   return img
 
   

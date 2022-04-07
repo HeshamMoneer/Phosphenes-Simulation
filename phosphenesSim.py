@@ -62,11 +62,13 @@ def pSim(img, dim = 32, dimWin = 640, mLevels = 16, gArr = None, simode = Simode
         radius = int(squareSide * 0.3)
     
     getCenter = lambda var : int(var * squareSide + squareSide/2) # get the center of phosphene square
-    for x in range(0, dim):
-        for y in range(0, dim):
-            color = img[y,x]
-            center = (getCenter(x), getCenter(y)) # corresponding phosphene square center
-            drawPhosphene(phosphenes, center, radius, color, mLevels, gArr, simode)
+    it = np.nditer(img, flags=['multi_index'])
+    while not it.finished:
+        y, x = it.multi_index
+        color = it[0]
+        it.iternext()
+        center = (getCenter(x), getCenter(y)) # corresponding phosphene square center
+        drawPhosphene(phosphenes, center, radius, color, mLevels, gArr, simode)
     
     blurKernel = 0
     if simode == Simode.ACM or simode == Simode.ASM:
