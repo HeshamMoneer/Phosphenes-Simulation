@@ -12,8 +12,8 @@ class Simode(enum.Enum): # Simulation mode
     ACM = 2 # Array color modulated
     ASM = 3 # Array size modulated
 
-def drawPhosphene(phosphenes, center, radius, color, mLevels, gArr, simode = Simode.BCM):
-    color = modulate(color, 255, mLevels - 1)
+def drawPhosphene(phosphenes, center, radius, color, gArr, simode = Simode.BCM):
+    color = int(color)
 
     if simode == Simode.BCM:
         cv2.circle(phosphenes, center, radius, color, -1)  # -1 means solid circle
@@ -47,6 +47,7 @@ simode: simulation mode
 def pSim(img, dim = 32, dimWin = 640, mLevels = 16, gArr = None, simode = Simode.BCM):
     img = squareCrop(img) # crop image to be a square
     img = cv2.resize(img, (dim, dim)) # resize image to desired resolution; bilinear interpolation
+    img = np.vectorize(modulate)(img, 255, mLevels - 1) # modulate colors to given levels; SIMD applied
     phosphenes = np.zeros((dimWin, dimWin, 1), dtype=np.uint8) # pixel grid that displays phosphenes
     squareSide = dimWin//dim # square pixels that will contain a phosphene
     radius = 0
@@ -68,7 +69,7 @@ def pSim(img, dim = 32, dimWin = 640, mLevels = 16, gArr = None, simode = Simode
         color = it[0]
         it.iternext()
         center = (getCenter(x), getCenter(y)) # corresponding phosphene square center
-        drawPhosphene(phosphenes, center, radius, color, mLevels, gArr, simode)
+        drawPhosphene(phosphenes, center, radius, color, gArr, simode)
     
     blurKernel = 0
     if simode == Simode.ACM or simode == Simode.ASM:
