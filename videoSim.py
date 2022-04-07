@@ -1,41 +1,51 @@
 import cv2
-import colorSampler as cS
-from phosphenesSim import pSim
-import time
+from phosphenesSim import (pSim, Simode)
+from facesDetector import (detectAllFaces, scaleToFirstFace, brightenFirstFace)
+from fps import (printFPS, printOrginialFPS)
+from gaussArray import gaussArr
+import enum
 
-def vSim(cap, dim = 32, noColors = 16):
-    colorSampler = cS.colorSampler(noColors)
-    # get the original video FPS
-    fps = cap.get(cv2.CAP_PROP_FPS)
-    print("Original FPS: "+str(fps))
-    classifier = cv2.CascadeClassifier('hcc.xml')
+class Modes(enum.Enum): # Face Detection mode
+    NOTHING = 0
+    DETECT_ALL_FACES = 1
+    SCALE_TO_FIRST_FACE = 2
+    BRIGHTEN_FIRST_FACE = 3
+
+def vSim(cap, dim = 32, dimWin = 640, mLevels = 16, simode = Simode.BCM, facesMode = Modes.NOTHING):
+    # Computer the gauss array in case needed
+    gArr = None
+    if simode == Simode.ACM or simode == Simode.ASM:
+        squareSide = dimWin//dim
+        radius = int(squareSide * 0.7)
+        gArr = gaussArr(radius)
+    
+    printOrginialFPS(cap)
+    classifier = cv2.CascadeClassifier('cc.xml')
     while True:
         ret,frame = cap.read()
         if(not ret): break
-        bboxes = classifier.detectMultiScale(frame)
-        for box in bboxes:
-            # extract
-            x, y, width, height = box
-            x2, y2 = x + width, y + height
-            # draw a rectangle over the pixels
-            cv2.rectangle(frame, (x, y), (x2, y2), (0,0,255), 1)
-        cv2.imshow('Original', frame)
-        startTime = time.time()
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        frame = pSim(img=frame, dim=dim,colorSampler=colorSampler)
-        endTime = time.time()
-        print('Actual FPS: '+ str(int(1/(endTime-startTime))), end='\r')
-        cv2.imshow('Phosphenated', frame)
+        # cv2.imshow('Original', frame)
+        frame = printFPS(lambda: fSim(frame, classifier, dim, dimWin, mLevels, gArr, simode, facesMode))
+        cv2.imshow('Phosphenated ' + simode.name, frame)
         if cv2.waitKey(1) & 0xFF == ord('0'): break
-
     cap.release()
-    cv2.destroyAllWindows() # destroy all opened windows
+    cv2.destroyAllWindows()
+
+def fSim(frame, classifier, dim, dimWin, mLevels, gArr, simode, facesMode):
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    if facesMode == Modes.DETECT_ALL_FACES: 
+        frame = detectAllFaces(frame, classifier)
+    elif facesMode == Modes.SCALE_TO_FIRST_FACE: 
+        frame = scaleToFirstFace(frame, classifier)
+    elif facesMode == Modes.BRIGHTEN_FIRST_FACE: 
+        frame = brightenFirstFace(frame, classifier)
+    return pSim(img = frame, dim = dim, dimWin = dimWin, mLevels = mLevels, simode = simode, gArr = gArr)
+
 
 def main():
     vidNumber = eval(input("Enter Video number: "))
-    # vidNumber <= 0 opens the webcam
-    cap = cv2.VideoCapture('./videos/vid' + str(vidNumber) + '.mp4' if vidNumber > 0 else 0)
-    vSim(cap)
+    cap = cv2.VideoCapture('./videos/vid' + str(vidNumber) + '.mp4' if vidNumber > 0 else 0) # vidNumber <= 0 opens the webcam
+    vSim(cap, simode = Simode.BCM, facesMode = Modes.SCALE_TO_FIRST_FACE)
 
 if __name__ == '__main__':
     main()
