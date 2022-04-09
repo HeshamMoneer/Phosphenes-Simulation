@@ -11,8 +11,9 @@ def updateBBoxes(frame, bboxes, counter, classifiers, facesMode):
             for x,y,w,h in bboxes:
                 subImg = frame[y:y+h, x:x+w]
                 eyes = classifiers[1].detectMultiScale(subImg)
-                allEyes.extend(eyes)
-            bboxes.extend(allEyes)
+                for x2, y2, w2, h2 in eyes: allEyes.append([x+x2, y+y2, w2, h2])
+            for box in bboxes: allEyes.append(box.tolist())
+            bboxes = allEyes
     counter = (counter + 1) % 10 # update bboxes every 10 frames
     return bboxes, counter
 
