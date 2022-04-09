@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from preprocessing import contrastBrightness
 
 def detectAllFaces(img, classifiers):
   bboxes = classifiers[0].detectMultiScale(img)
@@ -9,6 +10,7 @@ def detectAllFaces(img, classifiers):
   return img
 
 def scaleToFirstFace(img, classifiers):
+  # face rectangles can be tracked between consecutive frames
   bboxes = classifiers[0].detectMultiScale(img)
   x, y, width, height = bboxes[0] if len(bboxes) > 0 else (0,0,img.shape[1],img.shape[0])
   return img[y:y+height, x:x+width]
@@ -17,10 +19,7 @@ def brightenFirstFace(img, classifiers):
   bboxes = classifiers[0].detectMultiScale(img)
   if len(bboxes) > 0:
     x, y, width, height = bboxes[0]
-    it = np.nditer(img[y:y+height, x:x+width], op_flags=['readwrite'])
-    while not it.finished:
-      it[0] = it[0] + 30 if it[0] < 225 else 255
-      it.iternext()
+    img[y:y+height, x:x+width] = np.vectorize(contrastBrightness)(img[y:y+height, x:x+width], 1, 30)
   return img
 
 def detectFacesWithEyes(img, classifiers):
