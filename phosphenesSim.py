@@ -1,9 +1,8 @@
 import cv2
 import numpy as np
-from modulator import modulate
 from gaussianBlur import blur
-from cropper import squareCrop
 import enum
+from preprocessing import prep
 from gaussArray import gaussArr
 
 class Simode(enum.Enum): # Simulation mode
@@ -45,9 +44,7 @@ simode: simulation mode
     could be color moduled (CM) or size modulated (SM)
 '''
 def pSim(img, dim = 32, dimWin = 640, mLevels = 16, gArr = None, simode = Simode.BCM):
-    img = squareCrop(img) # crop image to be a square
-    img = cv2.resize(img, (dim, dim)) # resize image to desired resolution; bilinear interpolation
-    img = np.vectorize(modulate)(img, 255, mLevels - 1) # modulate colors to given levels; SIMD applied
+    img = prep(img, dim, mLevels) # image preprocessing
     phosphenes = np.zeros((dimWin, dimWin, 1), dtype=np.uint8) # pixel grid that displays phosphenes
     squareSide = dimWin//dim # square pixels that will contain a phosphene
     radius = 0
