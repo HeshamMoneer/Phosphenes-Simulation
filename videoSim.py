@@ -20,7 +20,7 @@ def vSim(cap, dim = 32, dimWin = 640, mLevels = 16, simode = Simode.BCM, facesMo
         gArr = gaussArr(radius)
     
     printOrginialFPS(cap)
-    classifier = cv2.CascadeClassifier('cc.xml')
+    classifier = cv2.CascadeClassifier('classifiers/cc.xml')
     while True:
         ret,frame = cap.read()
         if(not ret): break
