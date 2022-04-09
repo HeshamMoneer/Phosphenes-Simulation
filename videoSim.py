@@ -24,7 +24,6 @@ def vSim(cap, dim = 32, dimWin = 640, mLevels = 16, simode = Simode.BCM, facesMo
     while True:
         ret,frame = cap.read()
         if(not ret): break
-        # cv2.imshow('Original', frame)
         frame = printFPS(lambda: fSim(frame, classifier, dim, dimWin, mLevels, gArr, simode, facesMode))
         cv2.imshow('Phosphenated ' + simode.name, frame)
         if cv2.waitKey(1) & 0xFF == ord('0'): break
@@ -45,7 +44,7 @@ def fSim(frame, classifier, dim, dimWin, mLevels, gArr, simode, facesMode):
 def main():
     vidNumber = eval(input("Enter Video number: "))
     cap = cv2.VideoCapture('./videos/vid' + str(vidNumber) + '.mp4' if vidNumber > 0 else 0) # vidNumber <= 0 opens the webcam
-    vSim(cap, simode = Simode.BCM, facesMode = Modes.SCALE_TO_FIRST_FACE)
+    vSim(cap, simode = Simode.BCM, facesMode = Modes.DETECT_ALL_FACES)
 
 if __name__ == '__main__':
     main()
