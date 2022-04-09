@@ -1,15 +1,10 @@
 import cv2
 import numpy as np
 from gaussianBlur import blur
-import enum
+from enums import (Simode)
 from preprocessing import prep
 from gaussArray import gaussArr
 
-class Simode(enum.Enum): # Simulation mode
-    BCM = 0 # Blur color modulated
-    BSM = 1 # Blur size modulated
-    ACM = 2 # Array color modulated
-    ASM = 3 # Array size modulated
 
 def drawPhosphene(phosphenes, center, radius, color, gArr, simode = Simode.BCM):
     color = int(color)
