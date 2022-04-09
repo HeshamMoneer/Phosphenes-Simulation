@@ -25,6 +25,7 @@ def applyBBoxes(frame, bboxes, facesMode):
         x, y, w, h = bboxes[0] if len(bboxes) > 0 else (0,0,frame.shape[1],frame.shape[0])
         frame = frame[y:y+h, x:x+w]
     elif facesMode == Modes.BRIGHTEN_FIRST_FACE: 
-        x, y, w, h = bboxes[0] if len(bboxes) > 0 else (0,0,0,0)
-        frame = np.vectorize(contrastBrightness)(frame[y:y+h, x:x+w], 1, 30)
+        if len(bboxes) > 0:
+            x, y, w, h = bboxes[0] 
+            frame[y:y+h, x:x+w] = np.vectorize(contrastBrightness)(frame[y:y+h, x:x+w], 1, 30)
     return frame
