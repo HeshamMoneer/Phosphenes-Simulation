@@ -13,3 +13,7 @@ ALSO beware that Numba is installed in the pipfile
 
 To optimize circles drawing, draw each modulated circle first, then copy them instead of 
 drawing a new one every time
+
+## Additional notes
+Contrast brightness should come before modulation
+contrast brightness has a problem that needs fixing 
