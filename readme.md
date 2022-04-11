@@ -18,3 +18,9 @@ drawing a new one every time
 Contrast brightness should always come before modulation
 The performance after optimization is ~270 frames per second
 The performance can be further optimized by passing the circles cache between frames
+
+## All optimizations that I worked on
+1. Used Gaussian blur kernel instead of pdf()  
+2. The faces are not detected in every frame but rather limited times in 1s (3 times/second)  
+3. switched to optimized numpy loops  
+4. cached circles to avoid calling the draw method of opencv many times  
