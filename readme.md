@@ -7,9 +7,4 @@
 6. run **python3 [Any].py**
 
 ## NOTES
-https://kezunlin.me/post/61d55ab4/  
-check available options here to loop over numpy arrays efficiently  
-ALSO beware that Numba is installed in the pipfile
-
-To optimize circles drawing, draw each modulated circle first, then copy them instead of 
-drawing a new one every time
+The implementation yields around 170 simulated images in 1s
