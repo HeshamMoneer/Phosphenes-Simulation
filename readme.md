@@ -15,5 +15,4 @@ To optimize circles drawing, draw each modulated circle first, then copy them in
 drawing a new one every time
 
 ## Additional notes
-Contrast brightness should come before modulation
-contrast brightness has a problem that needs fixing 
+This branch is dedicated to displaying the different, 16, levels of the available modulated phosphenes
