@@ -13,3 +13,18 @@ ALSO beware that Numba is installed in the pipfile
 
 To optimize circles drawing, draw each modulated circle first, then copy them instead of 
 drawing a new one every time
+
+## Additional notes
+BSM is the most favorable one due to the following reasons:  
+  1. BCM and BSM are in general faster to compute than ACM and ASM  
+  2. BSM shows a more realistic effect to phosphene in comparison to BCM  
+  3. Applying BSM to the same image many times accumulated does not change the phosphene effect  
+  4. Applying BCM to the same image many times accumulated, however, yields a white image
+
+3 & 4 describe the code below:
+```
+while time.time() - start < 1:
+        counter += 1
+        img = pSim(img, simode = Simode.BCM) 
+        # notice that img is repeatedly used as an input and an output to the simulation
+```
