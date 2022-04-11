@@ -15,5 +15,5 @@ To optimize circles drawing, draw each modulated circle first, then copy them in
 drawing a new one every time
 
 ## Additional notes
-Contrast brightness should come before modulation
-contrast brightness has a problem that needs fixing 
+Contrast brightness should always come before modulation
+The performance after optimization is ~270 frames per second
