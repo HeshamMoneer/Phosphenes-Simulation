@@ -4,7 +4,7 @@ from gaussianBlur import blur
 from enums import (Simode)
 from preprocessing import prep
 from gaussArray import gaussArr
-
+import time
 
 def drawPhosphene(phosphenes, center, radius, color, gArr, simode = Simode.BCM):
     color = int(color)
@@ -77,13 +77,22 @@ def main():
     imgNumber = eval(input("Enter Image number: "))
     img = cv2.imread('./images/img' + str(imgNumber) + '.jpg',0) # read desired image in grey scale
 
-    cv2.imshow("BCM", pSim(img, simode = Simode.BCM))
+    # cv2.imshow("BCM", pSim(img, simode = Simode.BCM))
 
-    cv2.imshow("BSM", pSim(img, simode = Simode.BSM))
+    start = time.time()
+    counter = 0
+    while time.time() - start < 1:
+        counter += 1
+        img = pSim(img, simode = Simode.BSM)
+    end = time.time()
 
-    cv2.imshow("ACM", pSim(img, simode = Simode.ACM))
+    print(counter)
 
-    cv2.imshow("ASM", pSim(img, simode = Simode.ASM))
+    cv2.imshow("BSM", img)
+
+    # cv2.imshow("ACM", pSim(img, simode = Simode.ACM))
+
+    # cv2.imshow("ASM", pSim(img, simode = Simode.ASM))
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
