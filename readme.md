@@ -17,3 +17,4 @@ drawing a new one every time
 ## Additional notes
 Contrast brightness should always come before modulation
 The performance after optimization is ~270 frames per second
+The performance can be further optimized by passing the circles cache between frames
