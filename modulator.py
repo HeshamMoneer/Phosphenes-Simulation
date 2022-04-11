@@ -2,9 +2,9 @@ import numpy as np
 
 def modulate(value, max = 255, newMax = 15):
     valueN = value * (newMax/ max) # Linearly normzalized value
-    valueN = np.round(valueN, 0) # round to nearest integer
+    valueN = np.rint(valueN) # round to nearest integer
     value = valueN * (max/newMax) # Modulated value
-    return value
+    return np.uint8(value)
 
 
 def main():
