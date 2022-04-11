@@ -11,4 +11,4 @@ def prep(img, dim, mLevels):
   return img
 
 def contrastBrightness(val, a, b): # a -> contrast, b -> brightness
-  return np.clip(a * val + b, 0, 255)
+  return np.clip(a * np.uint16(val) + b, 0, 255)

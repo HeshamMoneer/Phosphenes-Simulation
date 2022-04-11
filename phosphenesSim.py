@@ -81,24 +81,27 @@ def pSim(img, dim = 32, dimWin = 640, mLevels = 16, gArr = None, simode = Simode
         blurKernel = radius * 2
 
     phosphenes = blur(phosphenes, blurKernel)
+
+    for key in cache:
+        cv2.imshow(str(key), cache[key])
+
     return phosphenes
 
 def main():
     imgNumber = eval(input("Enter Image number: "))
     img = cv2.imread('./images/img' + str(imgNumber) + '.jpg',0) # read desired image in grey scale
+    cv2.imshow("BSM", pSim(img, simode = Simode.BSM))
 
-    # cv2.imshow("BCM", pSim(img, simode = Simode.BCM))
+    # start = time.time()
+    # counter = 0
+    # while time.time() - start < 1:
+    #     counter += 1
+    #     tmpImg = pSim(img, simode = Simode.BSM)
+    # end = time.time()
 
-    start = time.time()
-    counter = 0
-    while time.time() - start < 1:
-        counter += 1
-        tmpImg = pSim(img, simode = Simode.BSM)
-    end = time.time()
+    # print(counter)
 
-    print(counter)
-
-    cv2.imshow("BSM", tmpImg)
+    # cv2.imshow("BSM", tmpImg)
 
     # cv2.imshow("ACM", pSim(img, simode = Simode.ACM))
 
