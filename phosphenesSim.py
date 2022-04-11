@@ -6,26 +6,35 @@ from preprocessing import prep
 from gaussArray import gaussArr
 import time
 
-def drawPhosphene(phosphenes, center, radius, color, gArr, simode = Simode.BCM):
+def drawPhosphene(phosphenes, tlf, radius, color, gArr, simode = Simode.BCM, cache = {}, squareSide = 0):
     color = int(color)
 
-    if simode == Simode.BCM:
-        cv2.circle(phosphenes, center, radius, color, -1)  # -1 means solid circle
+    if not color in cache:
+        newCircle = np.zeros((squareSide, squareSide, 1), dtype=np.uint8)
+        center = (squareSide//2, squareSide//2)
 
-    elif simode == Simode.BSM:
-        curRadius = (radius*color)//255
-        cv2.circle(phosphenes, center, curRadius, 255, -1)  # -1 means solid circle
+        if simode == Simode.BCM:
+            cv2.circle(newCircle, center, radius, color, -1)  # -1 means solid circle
 
-    elif simode == Simode.ACM:
-        for i in range(radius):
-            cv2.circle(phosphenes, center, i, color * gArr[i], 1)
+        elif simode == Simode.BSM:
+            curRadius = (radius*color)//255
+            cv2.circle(newCircle, center, curRadius, 255, -1)  # -1 means solid circle
 
-    elif simode == Simode.ASM:
-        curRadius = (radius*color)//255
-        step = len(gArr)/curRadius if curRadius > 0 else 0
-        for i in range(curRadius):
-            index = int(i * step)
-            cv2.circle(phosphenes, center, i, 255 * gArr[index], 1)
+        elif simode == Simode.ACM:
+            for i in range(radius):
+                cv2.circle(newCircle, center, i, color * gArr[i], 1)
+
+        elif simode == Simode.ASM:
+            curRadius = (radius*color)//255
+            step = len(gArr)/curRadius if curRadius > 0 else 0
+            for i in range(curRadius):
+                index = int(i * step)
+                cv2.circle(newCircle, center, i, 255 * gArr[index], 1)
+        
+        cache[color] = newCircle
+
+    x, y = tlf
+    phosphenes[y:y+squareSide, x:x+squareSide] = cache[color]
 
 '''
 Inputs:
@@ -43,6 +52,7 @@ def pSim(img, dim = 32, dimWin = 640, mLevels = 16, gArr = None, simode = Simode
     phosphenes = np.zeros((dimWin, dimWin, 1), dtype=np.uint8) # pixel grid that displays phosphenes
     squareSide = dimWin//dim # square pixels that will contain a phosphene
     radius = 0
+    cache = {} # will be used to cache drawn circles
 
     if simode == Simode.ACM or simode == Simode.ASM:
         radius = int(squareSide * 0.7)
@@ -54,14 +64,14 @@ def pSim(img, dim = 32, dimWin = 640, mLevels = 16, gArr = None, simode = Simode
     elif simode == Simode.BSM:
         radius = int(squareSide * 0.3)
     
-    getCenter = lambda var : int(var * squareSide + squareSide/2) # get the center of phosphene square
+    getTLF = lambda var : int(var * squareSide) # get the top left corner of phosphene square
     it = np.nditer(img, flags=['multi_index'])
     while not it.finished:
         y, x = it.multi_index
         color = it[0]
         it.iternext()
-        center = (getCenter(x), getCenter(y)) # corresponding phosphene square center
-        drawPhosphene(phosphenes, center, radius, color, gArr, simode)
+        tlf = (getTLF(x), getTLF(y)) # corresponding phosphene square top left corner
+        drawPhosphene(phosphenes, tlf, radius, color, gArr, simode, cache, squareSide)
     
     blurKernel = 0
     if simode == Simode.ACM or simode == Simode.ASM:
@@ -83,12 +93,12 @@ def main():
     counter = 0
     while time.time() - start < 1:
         counter += 1
-        img = pSim(img, simode = Simode.BSM)
+        tmpImg = pSim(img, simode = Simode.BSM)
     end = time.time()
 
     print(counter)
 
-    cv2.imshow("BSM", img)
+    cv2.imshow("BSM", tmpImg)
 
     # cv2.imshow("ACM", pSim(img, simode = Simode.ACM))
 
