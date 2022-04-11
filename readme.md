@@ -16,3 +16,6 @@ drawing a new one every time
 
 ## Additional notes
 This branch is dedicated to displaying the different, 16, levels of the available modulated phosphenes
+To display all the modulation levels:  
+run the code on the image number 13  
+the contrast brightness preprocessing line of code is commented to allow 0-255 colors to enter the simulation
