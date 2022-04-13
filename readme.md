@@ -24,3 +24,4 @@ The performance can be further optimized by passing the circles cache between fr
 2. The faces are not detected in every frame but rather limited times in 1s (3 times/second)  
 3. switched to optimized numpy loops  
 4. cached circles to avoid calling the draw method of opencv many times  
+5. move gaussian effect to be done on phosphenes before caching
