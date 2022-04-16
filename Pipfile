@@ -3,6 +3,10 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+[scripts]
+vSim = "python3 videoSim.py"
+pSim = "python3 phospheneSim.py"
+
 [packages]
 opencv-python = "*"
 matplotlib = "*"

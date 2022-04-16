@@ -4,7 +4,9 @@
 3. run **pip install --user pipenv**
 4. run **pipenv install**
 5. run **pipenv shell** to spawn a shell in the virtual env of the project; exit:ctrl+d
-6. run **python3 [Any].py**
+6. run **python3 [Any].py**  
+ANOTHER APPROACH  
+7. instead of spwaning a pipenv shell, you can run **pipenv run** + some script from the *pipfile*
 
 ## NOTES
 https://kezunlin.me/post/61d55ab4/  

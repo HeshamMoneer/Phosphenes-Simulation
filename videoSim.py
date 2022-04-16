@@ -7,7 +7,7 @@ from gaussArray import gaussArr
 from cropper import squareCrop
 
 
-def vSim(cap, dim = 32, dimWin = 640, mLevels = 16, simode = Simode.BCM, facesMode = Modes.NOTHING):
+def vSim(cap, dim = 32, dimWin = 640, mLevels = 16, simode = Simode.BSM, facesMode = Modes.NOTHING):
     # Computer the gauss array in case needed
     gArr = None
     if simode == Simode.ACM or simode == Simode.ASM:
