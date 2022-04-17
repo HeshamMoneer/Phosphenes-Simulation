@@ -5,6 +5,7 @@ from bboxes import (updateBBoxes, applyBBoxes)
 from fps import (printFPS, printOrginialFPS)
 from gaussArray import gaussArr
 from cropper import squareCrop
+import dlib
 
 
 def vSim(cap, dim = 32, dimWin = 640, mLevels = 16, simode = Simode.BSM, facesMode = Modes.NOTHING):
@@ -18,7 +19,9 @@ def vSim(cap, dim = 32, dimWin = 640, mLevels = 16, simode = Simode.BSM, facesMo
     printOrginialFPS(cap)
     faces_classifier = cv2.CascadeClassifier('classifiers/cc.xml')
     eyes_classifier = cv2.CascadeClassifier('classifiers/ecc.xml')
-    classifiers = [faces_classifier, eyes_classifier]
+    detector = dlib.get_frontal_face_detector()
+    predictor = dlib.shape_predictor('classifiers/shape_predictor_68_face_landmarks.dat')
+    classifiers = [faces_classifier, eyes_classifier, detector, predictor]
     bboxes = []
     counter = 0
     while True:

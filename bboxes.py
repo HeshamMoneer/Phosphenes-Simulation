@@ -5,15 +5,28 @@ from enums import Modes
 
 def updateBBoxes(frame, bboxes, counter, classifiers, facesMode):
     if counter == 0:
-        bboxes = classifiers[0].detectMultiScale(frame)
-        if facesMode == Modes.DETECT_FACES_WITH_EYES:
-            allEyes = []
-            for x,y,w,h in bboxes:
-                subImg = frame[y:y+h, x:x+w]
-                eyes = classifiers[1].detectMultiScale(subImg)
-                for x2, y2, w2, h2 in eyes: allEyes.append([x+x2, y+y2, w2, h2])
-            for box in bboxes: allEyes.append(box.tolist())
-            bboxes = allEyes
+        if facesMode == Modes.DETECT_FACE_FEATURES:
+            detector = classifiers[2]
+            predictor = classifiers[3]
+            rects = detector(frame, 1)
+            if len(rects) > 0:
+                rect = rects[0]
+                shape = predictor(frame, rect)
+                for i in range(0,68):
+                    x = shape.part(i).x
+                    y = shape.part(i).y
+                    cv2.circle(frame, (x, y), 2, 255, 2)
+
+        else:
+            bboxes = classifiers[0].detectMultiScale(frame)
+            if facesMode == Modes.DETECT_FACES_WITH_EYES:
+                allEyes = []
+                for x,y,w,h in bboxes:
+                    subImg = frame[y:y+h, x:x+w]
+                    eyes = classifiers[1].detectMultiScale(subImg)
+                    for x2, y2, w2, h2 in eyes: allEyes.append([x+x2, y+y2, w2, h2])
+                for box in bboxes: allEyes.append(box.tolist())
+                bboxes = allEyes
     counter = (counter + 1) % 10 # update bboxes every 10 frames
     return bboxes, counter
 

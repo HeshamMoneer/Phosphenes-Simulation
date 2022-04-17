@@ -7,6 +7,7 @@ class Modes(enum.Enum): # Face Detection mode
     SCALE_TO_FIRST_FACE = 2
     BRIGHTEN_FIRST_FACE = 3
     DETECT_FACES_WITH_EYES = 4
+    DETECT_FACE_FEATURES = 5
 
 
 class Simode(enum.Enum): # Simulation mode
