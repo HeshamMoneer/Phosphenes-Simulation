@@ -12,6 +12,11 @@ opencv-python = "*"
 matplotlib = "*"
 scipy = "*"
 numba = "*"
+cmake = "*"
+dlib = "*"
+scikit-image = "*"
+install = "*"
+imutils = "*"
 
 [dev-packages]
 
