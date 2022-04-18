@@ -17,6 +17,7 @@ dlib = "*"
 scikit-image = "*"
 install = "*"
 imutils = "*"
+opencv-contrib-python = "*"
 
 [dev-packages]
 

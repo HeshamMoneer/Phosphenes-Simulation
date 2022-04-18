@@ -12,3 +12,7 @@ ML/.ipynb_checkpoints/*
 ## The dlib dat file is so large, it can be found on the medium repo
 ## https://github.com/Azmarie/Face-Morphing
 classifiers/*.dat
+
+models
+test_images
+training_images
