@@ -3,7 +3,10 @@ import os
 import numpy as np
 
 def detect_face(img):
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    if len(img.shape) > 2 :
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    else:
+        gray = img
     face_cascade = cv2.CascadeClassifier('../classifiers/cc.xml')
     faces = face_cascade.detectMultiScale(gray)
     if (len(faces) == 0):
@@ -34,6 +37,9 @@ def prepare_training_data(data_folder_path='training_images'):
             # cv2.imshow("Training on image...", image)
             # cv2.waitKey(100)
             face, rect = detect_face(image)
+            # cv2.imshow(image_name, face)
+            # cv2.waitKey(500)
+            # cv2.destroyAllWindows()
             if face is not None:
                 faces.append(face)
                 labels.append(label)
