@@ -3,7 +3,7 @@ import numpy as np
 from preprocessing import contrastBrightness
 from enums import Modes
 
-def updateBBoxes(frame, bboxes, counter, classifiers, facesMode):
+def updateBBoxes(frame, bboxes, counter, classifiers, facesMode, ue = 5):
     if counter == 0:
         if facesMode == Modes.DETECT_FACE_FEATURES:
             detector = classifiers[2]
@@ -27,7 +27,7 @@ def updateBBoxes(frame, bboxes, counter, classifiers, facesMode):
                     for x2, y2, w2, h2 in eyes: allEyes.append([x+x2, y+y2, w2, h2])
                 for box in bboxes: allEyes.append(box.tolist())
                 bboxes = allEyes
-    counter = (counter + 1) % 10 # update bboxes every 10 frames
+    counter = (counter + 1) % ue # update bboxes every ue frames
     return bboxes, counter
 
 def applyBBoxes(frame, bboxes, facesMode):
