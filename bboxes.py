@@ -18,7 +18,7 @@ def updateBBoxes(frame, bboxes, counter, classifiers, facesMode, ue = 5):
                     cv2.circle(frame, (x, y), 2, 255, 2)
 
         else:
-            bboxes = classifiers[0].detectMultiScale(frame)
+            bboxes = classifiers[0].detectMultiScale(frame, minNeighbors = 8)
             if facesMode == Modes.DETECT_FACES_WITH_EYES:
                 allEyes = []
                 for x,y,w,h in bboxes:
@@ -27,7 +27,7 @@ def updateBBoxes(frame, bboxes, counter, classifiers, facesMode, ue = 5):
                     for x2, y2, w2, h2 in eyes: allEyes.append([x+x2, y+y2, w2, h2])
                 for box in bboxes: allEyes.append(box.tolist())
                 bboxes = allEyes
-    counter = (counter + 1) % ue # update bboxes every ue frames
+    counter = (counter + 1) % ue if ue > 1 else 0 # update bboxes every ue frames
     return bboxes, counter
 
 def applyBBoxes(frame, bboxes, facesMode):
