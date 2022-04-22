@@ -16,3 +16,7 @@ classifiers/*.dat
 models
 test_images
 training_images
+
+aligned_images
+utils
+*.avi
