@@ -47,12 +47,11 @@ simode: simulation mode
     could be gaussian blur (B) based or gaussian array (A) based
     could be color moduled (CM) or size modulated (SM)
 '''
-def pSim(img, dim = 32, dimWin = 640, mLevels = 16, gArr = None, simode = Simode.BCM):
+def pSim(img, dim = 32, dimWin = 640, mLevels = 16, gArr = None, simode = Simode.BCM, cache = {}):
     img = prep(img, dim, mLevels) # image preprocessing
     phosphenes = np.zeros((dimWin, dimWin, 1), dtype=np.uint8) # pixel grid that displays phosphenes
     squareSide = dimWin//dim # square pixels that will contain a phosphene
     radius = 0
-    cache = {} # will be used to cache drawn circles
 
     if simode == Simode.ACM or simode == Simode.ASM:
         radius = int(squareSide * 0.7)
@@ -82,7 +81,7 @@ def pSim(img, dim = 32, dimWin = 640, mLevels = 16, gArr = None, simode = Simode
 
     phosphenes = blur(phosphenes, blurKernel)
 
-    return phosphenes
+    return phosphenes, cache
 
 def main():
     imgNumber = eval(input("Enter Image number: "))
@@ -90,9 +89,10 @@ def main():
 
     start = time.time()
     counter = 0
+    cache = {}
     while time.time() - start < 1:
         counter += 1
-        tmpImg = pSim(img, simode = Simode.BSM)
+        tmpImg, cache = pSim(img, simode = Simode.BSM, cache = cache)
 
     print(counter)
 
