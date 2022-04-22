@@ -1,8 +1,10 @@
 import cv2
 import numpy as np
+import dlib
+
 from preprocessing import contrastBrightness
 from enums import Modes
-import dlib
+import simConfig as sc
 
 def updateBBoxes(frame, bboxes, counter, classifiers, facesMode, ue = 5):
     if counter == 0:
@@ -65,11 +67,13 @@ def applyBBoxes(frame, bboxes, facesMode):
     if facesMode == Modes.DETECT_ALL_FACES or facesMode == Modes.DETECT_FACES_WITH_EYES: 
         for x,y,w,h in bboxes:
             cv2.rectangle(frame, (x, y), (x+w, y+h), 255, 1)
-    elif facesMode == Modes.VJFR_ROI_M or facesMode == Modes.SFR_ROI_M: 
-        x, y, w, h = bboxes[0] if len(bboxes) > 0 else (0,0,frame.shape[1],frame.shape[0])
+    elif facesMode == Modes.VJFR_ROI_M or facesMode == Modes.SFR_ROI_M:
+        sc.faceIndex = 0 if sc.faceIndex >= len(bboxes) else sc.faceIndex
+        x, y, w, h = bboxes[sc.faceIndex] if len(bboxes) > 0 else (0,0,frame.shape[1],frame.shape[0])
         frame = frame[y:y+h, x:x+w]
     elif facesMode == Modes.BRIGHTEN_FIRST_FACE: 
+        sc.faceIndex = 0 if sc.faceIndex >= len(bboxes) else sc.faceIndex
         if len(bboxes) > 0:
-            x, y, w, h = bboxes[0] 
+            x, y, w, h = bboxes[sc.faceIndex] 
             frame[y:y+h, x:x+w] = np.vectorize(contrastBrightness)(frame[y:y+h, x:x+w], 1, 30)
     return frame

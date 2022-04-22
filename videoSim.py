@@ -2,12 +2,16 @@ import cv2
 import dlib
 import time
 
+import simConfig as sc
 from enums import (Modes, Simode)
 from phosphenesSim import (pSim, Simode)
 from bboxes import (updateBBoxes, applyBBoxes)
 from gaussArray import gaussArr
 from cropper import squareCrop
 
+def switch_face(event, x, y, flags, *params):
+    if event == cv2.EVENT_LBUTTONUP:
+        sc.faceIndex += 1
 
 def vSim(cap, dim = 32, dimWin = 640, mLevels = 16, simode = Simode.BSM, facesMode = Modes.NOTHING, cache = {}):
     # Computer the gauss array in case needed
@@ -27,6 +31,10 @@ def vSim(cap, dim = 32, dimWin = 640, mLevels = 16, simode = Simode.BSM, facesMo
     classifiers = [faces_classifier, eyes_classifier, detector, predictor]
     bboxes = []
     counter = 0
+
+    cv2.namedWindow('Phosphenated ' + simode.name)
+    cv2.setMouseCallback('Phosphenated ' + simode.name, switch_face)
+
     while True:
         ret,frame = cap.read()
         if(not ret): break
@@ -48,6 +56,7 @@ def vSim(cap, dim = 32, dimWin = 640, mLevels = 16, simode = Simode.BSM, facesMo
     cv2.destroyAllWindows()
 
 def main():
+    sc.init()
     vidNumber = eval(input("Enter Video number: "))
     cap = cv2.VideoCapture('./videos/vid' + str(vidNumber) + '.mp4' if vidNumber > 0 else 0) # vidNumber <= 0 opens the webcam
     vSim(cap, facesMode = Modes.SFR_ROI_M)
