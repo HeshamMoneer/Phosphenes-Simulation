@@ -5,18 +5,13 @@ name = "pypi"
 
 [scripts]
 vSim = "python3 videoSim.py"
-pSim = "python3 phospheneSim.py"
+pSim = "python3 phosphenesSim.py"
 
 [packages]
 opencv-python = "*"
-matplotlib = "*"
 scipy = "*"
-numba = "*"
 cmake = "*"
 dlib = "*"
-scikit-image = "*"
-install = "*"
-imutils = "*"
 opencv-contrib-python = "*"
 
 [dev-packages]
