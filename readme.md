@@ -28,3 +28,7 @@ The performance can be further optimized by passing the circles cache between fr
 4. cached circles to avoid calling the draw method of opencv many times  
 5. move gaussian effect to be done on phosphenes before caching did not show performance improvement
 6. saving cache between frames raised the throughput
+
+
+## SFR-ROI magnification
+1. The nose position could be directly detected using landmark detection point @33

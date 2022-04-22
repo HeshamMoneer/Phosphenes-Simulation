@@ -4,10 +4,11 @@ import enum
 class Modes(enum.Enum): # Face Detection mode
     NOTHING = 0
     DETECT_ALL_FACES = 1
-    SCALE_TO_FIRST_FACE = 2
-    BRIGHTEN_FIRST_FACE = 3
-    DETECT_FACES_WITH_EYES = 4
-    DETECT_FACE_FEATURES = 5
+    BRIGHTEN_FIRST_FACE = 2
+    DETECT_FACES_WITH_EYES = 3
+    DETECT_FACE_FEATURES = 4
+    VJFR_ROI_M = 5
+    SFR_ROI_M = 6
 
 
 class Simode(enum.Enum): # Simulation mode

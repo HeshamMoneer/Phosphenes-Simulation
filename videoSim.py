@@ -40,7 +40,7 @@ def vSim(cap, dim = 32, dimWin = 640, mLevels = 16, simode = Simode.BSM, facesMo
 def main():
     vidNumber = eval(input("Enter Video number: "))
     cap = cv2.VideoCapture('./videos/vid' + str(vidNumber) + '.mp4' if vidNumber > 0 else 0) # vidNumber <= 0 opens the webcam
-    vSim(cap, facesMode = Modes.SCALE_TO_FIRST_FACE)
+    vSim(cap, facesMode = Modes.SFR_ROI_M)
 
 if __name__ == '__main__':
     main()
