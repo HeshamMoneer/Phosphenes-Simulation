@@ -18,7 +18,7 @@ drawing a new one every time
 
 ## Additional notes
 Contrast brightness should always come before modulation
-The performance after optimization is ~270 frames per second
+The performance after optimization is ~300 frames per second
 The performance can be further optimized by passing the circles cache between frames
 
 ## All optimizations that I worked on
@@ -26,4 +26,5 @@ The performance can be further optimized by passing the circles cache between fr
 2. The faces are not detected in every frame but rather limited times in 1s (3 times/second)  
 3. switched to optimized numpy loops  
 4. cached circles to avoid calling the draw method of opencv many times  
-5. move gaussian effect to be done on phosphenes before caching
+5. move gaussian effect to be done on phosphenes before caching did not show performance improvement
+6. saving cache between frames raised the throughput

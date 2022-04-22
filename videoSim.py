@@ -8,7 +8,7 @@ from cropper import squareCrop
 import dlib
 
 
-def vSim(cap, dim = 32, dimWin = 640, mLevels = 16, simode = Simode.BSM, facesMode = Modes.NOTHING):
+def vSim(cap, dim = 32, dimWin = 640, mLevels = 16, simode = Simode.BSM, facesMode = Modes.NOTHING, cache = {}):
     # Computer the gauss array in case needed
     gArr = None
     if simode == Simode.ACM or simode == Simode.ASM:
@@ -31,7 +31,7 @@ def vSim(cap, dim = 32, dimWin = 640, mLevels = 16, simode = Simode.BSM, facesMo
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         bboxes, counter = updateBBoxes(frame, bboxes, counter, classifiers, facesMode)
         frame = applyBBoxes(frame, bboxes, facesMode)
-        frame = pSim(img = frame, dim = dim, dimWin = dimWin, mLevels = mLevels, simode = simode, gArr = gArr)
+        frame, cache = pSim(img = frame, dim = dim, dimWin = dimWin, mLevels = mLevels, simode = simode, gArr = gArr, cache = cache)
         cv2.imshow('Phosphenated ' + simode.name, frame)
         if cv2.waitKey(1) & 0xFF == ord('0'): break
     cap.release()
