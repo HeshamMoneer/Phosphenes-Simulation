@@ -16,8 +16,8 @@ def detect_face(img, face_cascade):
 
 def doMorphing(faceImg, avgP, avgS, predictor, tri, alpha = 1):
 	[faceImg, faceP] = generate_face_correspondences(faceImg, avgS, predictor)
-	for point in faceP:
-		cv2.circle(faceImg, point, 1, 255,1)
+	# for point in faceP:
+	# 	cv2.circle(faceImg, point, 1, 255,1)
 	# cv2.rectangle(faceImg, (2,2), (faceImg.shape[1] -2, faceImg.shape[0] -2), 255, 2)
 	# return faceImg
 	# for t in tri:

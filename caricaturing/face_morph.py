@@ -69,11 +69,14 @@ def generate_morph_frame(faceImg,points1,points2,tri_list, alpha):
         y = int(tri_list[i][1])
         z = int(tri_list[i][2])
         
-        t1 = [points1[x], points1[y], points1[z]]
-        t2 = [points2[x], points2[y], points2[z]]
-        t = [points[x], points[y], points[z]]
+        t1 = [mb(points1[x]), mb(points1[y]), mb(points1[z])]
+        t2 = [mb(points2[x]), mb(points2[y]), mb(points2[z])]
+        t =  [mb(points[x]), mb(points[y]), mb(points[z])]
 
         # Morph one triangle at a time.
         morph_triangle(faceImg, morphed_frame, t1, t2, t)
         
     return morphed_frame
+
+def mb(t): #maintain bounds
+    return min(max(t[0],0),159), min(max(t[1],0),159)
