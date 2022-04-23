@@ -1,6 +1,8 @@
 
 import enum
 
+# All possible modes must be properly defined
+
 class Modes(enum.Enum): # Face Detection mode
     NOTHING = 0
     DETECT_ALL_FACES = 1

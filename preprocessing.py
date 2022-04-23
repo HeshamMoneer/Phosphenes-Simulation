@@ -1,15 +1,21 @@
-import numpy as np
-from cropper import squareCrop
-from modulator import modulate
 import cv2
+import numpy as np
 
-def prep(img, dim, mLevels):
+import simConfig as sc
+from modulator import modulate
+
+def prep(img):
   img = squareCrop(img) # crop image to be a square; if not already a square
-  img = cv2.resize(img, (dim, dim)) # resize image to desired resolution; bilinear interpolation
+  img = cv2.resize(img, (sc.dim, sc.dim)) # resize image to desired resolution; bilinear interpolation
   img = cv2.equalizeHist(img)
-  #img = contrastBrightness(img, 1, 30)
-  img = modulate(img, 255, mLevels - 1) # modulate colors to given levels; SIMD applied
+  img = modulate(img, 255, sc.mLevels - 1) # modulate colors to given levels; SIMD applied
   return img
 
 def contrastBrightness(val, a, b): # a -> contrast, b -> brightness
   return np.clip(a * np.uint16(val) + b, 0, 255)
+
+def squareCrop(img):
+  height, width = img.shape[0], img.shape[1]
+  if height == width: return img
+  dim = min([height, width])
+  return img[height - dim:height, 0:dim]
