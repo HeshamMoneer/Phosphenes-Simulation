@@ -5,6 +5,7 @@ from dlib import rectangle
 import simConfig as sc
 from preprocessing import contrastBrightness
 from enums import Modes
+from caricaturing.__init__ import caric
 
 def updateBBoxes(frame):
     if sc.counter == 0:
@@ -28,12 +29,14 @@ def applyBBoxes(frame):
         for x,y,w,h in sc.bboxes:
             cv2.rectangle(frame, (x, y), (x+w, y+h), 255, 1)
 
-    elif sc.facesMode == Modes.VJFR_ROI_M or sc.facesMode == Modes.SFR_ROI_M:
+    elif sc.facesMode == Modes.VJFR_ROI_M or sc.facesMode == Modes.SFR_ROI_M or sc.facesMode == Modes.VJFR_ROI_C:
         if len(sc.bboxes) > 0:
             x, y, w, h = sc.bboxes[sc.faceIndex]
             if sc.facesMode == Modes.SFR_ROI_M:
                 x, y, w, h = VJFR_to_SFR(x, y, w, h, frame)
             frame = frame[y:y+h, x:x+w]
+            if sc.facesMode == Modes.VJFR_ROI_C:
+                frame = caric(frame)
 
     elif sc.facesMode == Modes.DETECT_FACE_FEATURES:
         if len(sc.bboxes) > 0:

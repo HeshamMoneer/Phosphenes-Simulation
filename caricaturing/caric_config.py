@@ -1,8 +1,8 @@
 import cv2
 import dlib
 
-from delaunay_triangulation import make_delaunay
-from face_landmark_detection import generate_face_land_marks
+from .delaunay_triangulation import make_delaunay
+from .face_landmark_detection import generate_face_land_marks
 
 '''
 Caricaturing configuration values that could be manipulated
@@ -14,12 +14,12 @@ alpha: caricaturing factor; typically 0 <= alpha <= 1
 def init(fc = None, p = None):
   global face_cascade, predictor, avg, avgP, avgS, tri, alpha
   if fc: face_cascade = fc
-  else: face_cascade = cv2.CascadeClassifier('utils/cc.xml')
+  else: face_cascade = cv2.CascadeClassifier('caricaturing/utils/cc.xml')
 
   if p: predictor = p
-  else: predictor = dlib.shape_predictor('utils/shape_predictor_68_face_landmarks.dat')
+  else: predictor = dlib.shape_predictor('caricaturing/utils/shape_predictor_68_face_landmarks.dat')
 
-  avg = cv2.imread('images/aligned_images/avgF.png')
+  avg = cv2.imread('caricaturing/images/aligned_images/avgF.png')
   avg, _ = detect_face(avg)
   avg = cv2.resize(avg, (160, 160))
 

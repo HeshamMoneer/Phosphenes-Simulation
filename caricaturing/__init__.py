@@ -1,8 +1,8 @@
 import cv2
 
-import caric_config as cc
-from face_landmark_detection import generate_face_correspondences
-from face_morph import generate_morph_frame
+from . import caric_config as cc
+from .face_landmark_detection import generate_face_correspondences
+from .face_morph import generate_morph_frame
 
 def doMorphing(faceImg):
 	[faceImg, faceP] = generate_face_correspondences(faceImg, cc.avgS, cc.predictor)
@@ -23,6 +23,7 @@ def caric(frame, faceOnly = True):
 	return frame
 
 def main():
+	# change paths in init to run main properly
 	cc.init()
 	cap = cv2.VideoCapture(0)
 	while True:

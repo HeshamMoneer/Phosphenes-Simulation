@@ -3,6 +3,7 @@ import dlib
 
 from gaussArray import gaussArr
 from enums import (Simode, Modes)
+import caricaturing.caric_config as cc
 
 '''
 Simulation configuration values that could be manipulated
@@ -48,7 +49,8 @@ def init():
   if simode == Simode.ACM or simode == Simode.ASM: gArr = gaussArr(radius)
   else: gArr = None
 
-  global classifiers
+  global ur, classifiers
+  ur = 5
 
   faces_classifier = cv2.CascadeClassifier('classifiers/cc.xml')
   eyes_classifier, predictor = None, None
@@ -56,11 +58,13 @@ def init():
     eyes_classifier = cv2.CascadeClassifier('classifiers/ecc.xml')
   elif facesMode == Modes.DETECT_FACE_FEATURES or facesMode == Modes.SFR_ROI_M:
     predictor = dlib.shape_predictor('classifiers/shape_predictor_68_face_landmarks.dat')
+  elif facesMode == Modes.VJFR_ROI_C:
+    cc.init(faces_classifier, predictor)
+    ur = 1
 
   classifiers = [faces_classifier, eyes_classifier, predictor]
 
-  global bboxes, ur, counter, windowName
+  global bboxes, counter, windowName
   bboxes = []
-  ur = 5
   counter = 0
   windowName = 'Phosphenated ' + simode.name + ' & ' + facesMode.name
