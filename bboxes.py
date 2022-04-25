@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from dlib import rectangle
+import skimage
 
 import simConfig as sc
 from preprocessing import contrastBrightness
@@ -29,14 +30,20 @@ def applyBBoxes(frame):
         for x,y,w,h in sc.bboxes:
             cv2.rectangle(frame, (x, y), (x+w, y+h), 255, 1)
 
-    elif sc.facesMode == Modes.VJFR_ROI_M or sc.facesMode == Modes.SFR_ROI_M or sc.facesMode == Modes.VJFR_ROI_C:
+    elif sc.facesMode == Modes.VJFR_ROI_M or sc.facesMode == Modes.SFR_ROI_M or sc.facesMode == Modes.VJFR_ROI_C or sc.facesMode == Modes.SFR_ROI_HE:
         if len(sc.bboxes) > 0:
             x, y, w, h = sc.bboxes[sc.faceIndex]
             if sc.facesMode == Modes.SFR_ROI_M:
                 x, y, w, h = VJFR_to_SFR(x, y, w, h, frame)
-            frame = frame[y:y+h, x:x+w]
+                frame = frame[y:y+h, x:x+w]
+            if sc.facesMode == Modes.SFR_ROI_HE:
+                subFrame = frame[y:y+h, x:x+w] #VJFR
+                subFrame = heq(subFrame) #equalization
+                x, y, w, h = VJFR_to_SFR(x, y, w, h, frame)
+                frame = frame[y:y+h, x:x+w]
             if sc.facesMode == Modes.VJFR_ROI_C:
                 frame = caric(frame)
+                frame = frame[y:y+h, x:x+w]
 
     elif sc.facesMode == Modes.DETECT_FACE_FEATURES:
         if len(sc.bboxes) > 0:
@@ -84,3 +91,16 @@ def VJFR_to_SFR(xOld, yOld, wOld, hOld, frame):
     if yNew + hNew > frame.shape[0]: hNew = frame.shape[0] - yNew
 
     return (xNew,yNew,wNew,hNew)
+
+def heq(frame):
+    rect = rectangle(0, 0, frame.shape[1], frame.shape[0])
+    predictor = sc.classifiers[2]
+    shape = predictor(frame, rect)
+    landmarks = np.array([[p.x, p.y] for p in shape.parts()])
+    outline = landmarks[[*range(17), *range(26,16,-1)]]
+    Y, X = skimage.draw.polygon(outline[:,1], outline[:,0], frame.shape)
+    cropped_face = np.zeros(frame.shape, dtype=np.uint8)
+    cropped_face[Y, X] = frame[Y, X]
+    cropped_face = cv2.equalizeHist(cropped_face)
+    frame[Y, X] = cropped_face[Y, X]
+    return frame

@@ -15,6 +15,7 @@ dlib = "*"
 opencv-contrib-python = "*"
 tensorflow = "*"
 sklearn = "*"
+scikit-image = "*"
 
 [dev-packages]
 
