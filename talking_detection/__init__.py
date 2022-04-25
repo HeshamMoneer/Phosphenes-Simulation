@@ -21,16 +21,16 @@ def talking_probability(frames, predictor, model, scaler):
     faceRect = dlib.rectangle(0,0,frame.shape[1], frame.shape[0])
     shape = predictor(frame, faceRect)
 
-    part_50 = (shape.part(50).x, shape.part(50).y)
-    part_58 = (shape.part(58).x, shape.part(58).y)
-    part_51 = (shape.part(51).x, shape.part(51).y)
-    part_57 = (shape.part(57).x, shape.part(57).y)
-    part_52 = (shape.part(52).x, shape.part(52).y)
-    part_56 = (shape.part(56).x, shape.part(56).y)
+    part_61 = (shape.part(61).x, shape.part(61).y)
+    part_67 = (shape.part(67).x, shape.part(67).y)
+    part_62 = (shape.part(62).x, shape.part(62).y)
+    part_66 = (shape.part(66).x, shape.part(66).y)
+    part_63 = (shape.part(63).x, shape.part(63).y)
+    part_65 = (shape.part(65).x, shape.part(65).y)
 
-    A = dist(part_50, part_58)
-    B = dist(part_51, part_57)
-    C = dist(part_52, part_56)
+    A = dist(part_61, part_67)
+    B = dist(part_62, part_66)
+    C = dist(part_63, part_65)
 
     avg_gap = (A + B + C) / 3.0
 
