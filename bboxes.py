@@ -7,8 +7,25 @@ import simConfig as sc
 from preprocessing import contrastBrightness
 from enums import Modes
 from caricaturing.__init__ import caric
+from talking_detection.__init__ import talking_probability
 
 def updateBBoxes(frame):
+    if sc.facesMode == Modes.SFR_ROI_M_TD:
+        bboxes = sc.classifiers[0].detectMultiScale(frame)
+        sc.bboxes = bboxes
+        if len(sc.talkingAcc) == 0 or len(sc.talkingAcc) != len(bboxes): 
+            sc.talkingAcc = [[] for _ in range(len(bboxes))]
+        for i in range(len(bboxes)):
+            x, y, w, h = bboxes[i]
+            sc.talkingAcc[i].append(frame[y:y+h, x:x+w])
+        if len(sc.talkingAcc) > 0 and len(sc.talkingAcc[0]) == 25:
+            predictor = sc.classifiers[2]
+            for i in range(len(sc.talkingAcc)):
+                sc.talkingAcc[i] = talking_probability(sc.talkingAcc[i], predictor, sc.talkingModel, sc.talkingScaler)
+            print(sc.talkingAcc)
+            sc.faceIndex = np.argmax(sc.talkingAcc)
+            sc.talkingAcc = []
+        return
     if sc.counter == 0:
         #scaleFactor & minNeighbors can make detection faster but compromise accuracy
         bboxes = sc.classifiers[0].detectMultiScale(frame)
@@ -26,14 +43,14 @@ def updateBBoxes(frame):
 def applyBBoxes(frame):
     sc.faceIndex = 0 if sc.faceIndex >= len(sc.bboxes) else sc.faceIndex
 
-    if sc.facesMode == Modes.DETECT_ALL_FACES or sc.facesMode == Modes.DETECT_FACES_WITH_EYES: 
+    if sc.facesMode in [Modes.DETECT_ALL_FACES, Modes.DETECT_FACES_WITH_EYES]: 
         for x,y,w,h in sc.bboxes:
             cv2.rectangle(frame, (x, y), (x+w, y+h), 255, 1)
 
-    elif sc.facesMode == Modes.VJFR_ROI_M or sc.facesMode == Modes.SFR_ROI_M or sc.facesMode == Modes.VJFR_ROI_C or sc.facesMode == Modes.SFR_ROI_HE:
+    elif sc.facesMode in [Modes.VJFR_ROI_M, Modes.SFR_ROI_M, Modes.VJFR_ROI_C, Modes.SFR_ROI_HE, Modes.SFR_ROI_M_TD]:
         if len(sc.bboxes) > 0:
             x, y, w, h = sc.bboxes[sc.faceIndex]
-            if sc.facesMode == Modes.SFR_ROI_M:
+            if sc.facesMode in [Modes.SFR_ROI_M, Modes.SFR_ROI_M_TD]:
                 x, y, w, h = VJFR_to_SFR(x, y, w, h, frame)
                 frame = frame[y:y+h, x:x+w]
             if sc.facesMode == Modes.SFR_ROI_HE:
@@ -42,8 +59,8 @@ def applyBBoxes(frame):
                 x, y, w, h = VJFR_to_SFR(x, y, w, h, frame)
                 frame = frame[y:y+h, x:x+w]
             if sc.facesMode == Modes.VJFR_ROI_C:
-                frame = caric(frame)
                 frame = frame[y:y+h, x:x+w]
+                frame = caric(frame)
 
     elif sc.facesMode == Modes.DETECT_FACE_FEATURES:
         if len(sc.bboxes) > 0:
