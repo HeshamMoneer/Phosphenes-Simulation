@@ -6,6 +6,7 @@ from keras.models import load_model
 from gaussArray import gaussArr
 from enums import (Simode, Modes)
 import caricaturing.caric_config as cc
+from emotion_recognition.__init__ import createModel
 
 '''
 Simulation configuration values that could be manipulated
@@ -25,7 +26,7 @@ def init():
   dimWin = 640
   mLevels = 16
   simode = Simode.BSM
-  facesMode = Modes.SFR_ROI_M
+  facesMode = Modes.SFR_ROI_M_ER
   cache = {}
 
   global squareSide, radius, blurKernel, gArr
@@ -58,7 +59,7 @@ def init():
   eyes_classifier, predictor = None, None
   if facesMode == Modes.DETECT_FACES_WITH_EYES:
     eyes_classifier = cv2.CascadeClassifier('classifiers/ecc.xml')
-  elif facesMode in [Modes.DETECT_FACE_FEATURES, Modes.SFR_ROI_M, Modes.SFR_ROI_HE, Modes.SFR_ROI_M_TD]:
+  elif facesMode in [Modes.DETECT_FACE_FEATURES, Modes.SFR_ROI_M, Modes.SFR_ROI_HE, Modes.SFR_ROI_M_TD, Modes.SFR_ROI_M_ER]:
     predictor = dlib.shape_predictor('classifiers/shape_predictor_68_face_landmarks.dat')
   elif facesMode == Modes.VJFR_ROI_C:
     cc.init(faces_classifier, predictor)
@@ -79,3 +80,12 @@ def init():
     talkingAcc = []
     talkingModel = load_model('./talking_detection/model.h5')
     talkingScaler = MinMaxScaler()
+
+  global emotionsModel, emotion_dict, emotionIndex
+  emotionsModel = None
+  emotion_dict = None
+  emotionIndex = 4
+  if facesMode == Modes.SFR_ROI_M_ER:
+    emotionsModel = createModel()
+    emotionsModel.load_weights('./emotion_recognition/model.h5')
+    emotion_dict = {0: "Angry", 1: "Disgusted", 2: "Fearful", 3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}

@@ -8,6 +8,7 @@ from preprocessing import contrastBrightness
 from enums import Modes
 from caricaturing.__init__ import caric
 from talking_detection.__init__ import talking_probability
+from emotion_recognition.__init__ import detectEmo
 
 def updateBBoxes(frame):
     if sc.facesMode == Modes.SFR_ROI_M_TD:
@@ -47,7 +48,7 @@ def applyBBoxes(frame):
         for x,y,w,h in sc.bboxes:
             cv2.rectangle(frame, (x, y), (x+w, y+h), 255, 1)
 
-    elif sc.facesMode in [Modes.VJFR_ROI_M, Modes.SFR_ROI_M, Modes.VJFR_ROI_C, Modes.SFR_ROI_HE, Modes.SFR_ROI_M_TD]:
+    elif sc.facesMode in [Modes.VJFR_ROI_M, Modes.SFR_ROI_M, Modes.VJFR_ROI_C, Modes.SFR_ROI_HE, Modes.SFR_ROI_M_TD, Modes.SFR_ROI_M_ER]:
         if len(sc.bboxes) > 0:
             x, y, w, h = sc.bboxes[sc.faceIndex]
             if sc.facesMode in [Modes.SFR_ROI_M, Modes.SFR_ROI_M_TD]:
@@ -56,6 +57,11 @@ def applyBBoxes(frame):
             if sc.facesMode == Modes.SFR_ROI_HE:
                 subFrame = frame[y:y+h, x:x+w] #VJFR
                 subFrame = heq(subFrame) #equalization
+                x, y, w, h = VJFR_to_SFR(x, y, w, h, frame)
+                frame = frame[y:y+h, x:x+w]
+            if sc.facesMode == Modes.SFR_ROI_M_ER:
+                subframe = frame[y:y+h, x:x+w]
+                sc.emotionIndex = detectEmo(subframe, sc.emotionsModel)
                 x, y, w, h = VJFR_to_SFR(x, y, w, h, frame)
                 frame = frame[y:y+h, x:x+w]
             if sc.facesMode == Modes.VJFR_ROI_C:

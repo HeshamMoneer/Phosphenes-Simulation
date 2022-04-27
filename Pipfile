@@ -4,8 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [scripts]
-vSim = "python3 videoSim.py"
-pSim = "python3 phosphenesSim.py"
+vSim = "bash -c \"python3 videoSim.py 2> /dev/null\""
+pSim = "bash -c \"python3 phosphenesSim.py 2> /dev/null\""
 
 [packages]
 opencv-python = "*"

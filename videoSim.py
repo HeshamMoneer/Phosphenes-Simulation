@@ -20,7 +20,7 @@ def vSim(cap):
         ret,frame = cap.read()
         if(not ret): break
 
-        startTime = time.time()
+        # startTime = time.time()
         
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         updateBBoxes(frame)
@@ -28,8 +28,8 @@ def vSim(cap):
         frame = pSim(frame)
         cv2.imshow(sc.windowName, frame)
         
-        endTime = time.time()
-        print('FPS: '+ str(int(1/(endTime-startTime))), end='\r')
+        # endTime = time.time()
+        # print('FPS: '+ str(int(1/(endTime-startTime))), end='\r')
 
         if cv2.waitKey(1) & 0xFF == ord('0'): break
     cap.release()
@@ -37,8 +37,8 @@ def vSim(cap):
 
 def main():
     sc.init()
-
-    vidNumber = eval(input("Enter Video number: "))
+    print("Enter Video number: ", end ="")
+    vidNumber = eval(input())
     cap = cv2.VideoCapture('./videos/vid' + str(vidNumber) + '.mp4' if vidNumber > 0 else 0) # vidNumber <= 0 opens the webcam
     vSim(cap)
 

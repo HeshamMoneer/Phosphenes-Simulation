@@ -14,6 +14,7 @@ class Modes(enum.Enum): # Face Detection mode
     VJFR_ROI_C = 7
     SFR_ROI_HE = 8
     SFR_ROI_M_TD = 9
+    SFR_ROI_M_ER = 10
 
 
 class Simode(enum.Enum): # Simulation mode

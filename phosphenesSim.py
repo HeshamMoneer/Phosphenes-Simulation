@@ -4,7 +4,7 @@ import time
 
 import simConfig as sc
 from gaussianBlur import blur
-from enums import (Simode)
+from enums import (Simode, Modes)
 from preprocessing import prep
 
 def drawPhosphene(phosphenes, tlf, color):
@@ -41,6 +41,12 @@ def drawPhosphene(phosphenes, tlf, color):
 def pSim(img):
     img = prep(img) # image preprocessing
     phosphenes = np.zeros((sc.dimWin, sc.dimWin, 1), dtype=np.uint8) # pixel grid that displays phosphenes
+
+    if sc.facesMode == Modes.SFR_ROI_M_ER:
+        print(str(sc.emotionIndex) + " " +sc.emotion_dict[sc.emotionIndex], end='\r')
+        binary = format(sc.emotionIndex, '03b')
+        for i in range(len(binary)):
+            img[0, i] = int(binary[i]) * 255
 
     getTLF = lambda var : int(var * sc.squareSide) # get the top left corner of phosphene square
     it = np.nditer(img, flags=['multi_index'])

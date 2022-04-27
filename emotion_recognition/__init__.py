@@ -36,7 +36,7 @@ def detectEmo(faceGray, model):
       max1 = i
   
   if max1 != 4: return max1
-  if max2 > 0.3: return max2
+  if max2 > 0: return max2
   return max1
 
 
