@@ -67,6 +67,8 @@ def applyBBoxes(frame):
             if sc.facesMode == Modes.VJFR_ROI_C:
                 frame = frame[y:y+h, x:x+w]
                 frame = caric(frame)
+            if sc.facesMode == Modes.VJFR_ROI_M:
+                frame = frame[y:y+h, x:x+w]
 
     elif sc.facesMode == Modes.DETECT_FACE_FEATURES:
         if len(sc.bboxes) > 0:
