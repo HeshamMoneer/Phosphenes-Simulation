@@ -4,7 +4,7 @@ import enum
 # All possible modes must be properly defined
 
 class Modes(enum.Enum): # Face Detection mode
-    NOTHING = 0
+    NOTHING = 0 #DLR or control group
     DETECT_ALL_FACES = 1
     BRIGHTEN_FIRST_FACE = 2
     DETECT_FACES_WITH_EYES = 3
