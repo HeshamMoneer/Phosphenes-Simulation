@@ -12,6 +12,7 @@ def switch_face(event, x, y, flags, *params):
 def vSim(cap):
     fps = cap.get(cv2.CAP_PROP_FPS) # get the original video FPS
     print("Original FPS: "+str(fps))
+    original_frame_ms = int((1/fps) * 1000)
 
     cv2.namedWindow(sc.windowName)
     cv2.setMouseCallback(sc.windowName, switch_face)
@@ -20,7 +21,7 @@ def vSim(cap):
         ret,frame = cap.read()
         if(not ret): break
 
-        # startTime = time.time()
+        startTime = time.time()
         
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         updateBBoxes(frame)
@@ -28,10 +29,12 @@ def vSim(cap):
         frame = pSim(frame)
         cv2.imshow(sc.windowName, frame)
         
-        # endTime = time.time()
+        endTime = time.time()
         # print('FPS: '+ str(int(1/(endTime-startTime))), end='\r')
-
-        if cv2.waitKey(1) & 0xFF == ord('0'): break
+        elapsed_ms = int((endTime - startTime) * 1000)
+        waiting_time = original_frame_ms - elapsed_ms
+        if waiting_time <= 0 : waiting_time = 1
+        if cv2.waitKey(waiting_time) & 0xFF == ord('0'): break
     cap.release()
     cv2.destroyAllWindows()
 
@@ -39,7 +42,7 @@ def main():
     sc.init()
     print("Enter Video number: ", end ="")
     vidNumber = eval(input())
-    cap = cv2.VideoCapture('./videos/vid' + str(vidNumber) + '.mp4' if vidNumber > 0 else 0) # vidNumber <= 0 opens the webcam
+    cap = cv2.VideoCapture('./experiment/tests/G' + str(vidNumber) + '/Identity test.mp4' if vidNumber > 0 else 0) # vidNumber <= 0 opens the webcam
     vSim(cap)
 
 if __name__ == '__main__':
