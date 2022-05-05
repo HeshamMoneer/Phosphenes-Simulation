@@ -14,8 +14,9 @@ def vSim(cap):
     print("Original FPS: "+str(fps))
     original_frame_ms = int((1/fps) * 1000)
 
-    cv2.namedWindow(sc.windowName)
+    cv2.namedWindow(sc.windowName,  cv2.WINDOW_NORMAL)
     cv2.setMouseCallback(sc.windowName, switch_face)
+    cv2.setWindowProperty(sc.windowName,cv2.WND_PROP_FULLSCREEN,cv2.WINDOW_FULLSCREEN)
 
     while True:
         ret,frame = cap.read()
