@@ -53,7 +53,9 @@ def main():
     else:
         path += experiment_type + '.mp4'
     cap = cv2.VideoCapture(path) # vidNumber <= 0 opens the webcam
+    s = time.time()
     vSim(cap)
+    print('Test total time: '+ str(time.time() - s)+' Sec')
 
 if __name__ == '__main__':
     main()

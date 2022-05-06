@@ -12,7 +12,7 @@ from emotion_recognition.__init__ import detectEmo
 
 def updateBBoxes(frame):
     if sc.facesMode == Modes.SFR_ROI_M_TD or sc.facesMode == Modes.VJFR_ROI_M_TD:
-        bboxes = sc.classifiers[0].detectMultiScale(frame)
+        bboxes = sc.classifiers[0].detectMultiScale(frame, scaleFactor = 1.3)
         sc.bboxes = bboxes
         if len(sc.talkingAcc) == 0 or len(sc.talkingAcc) != len(bboxes): 
             sc.talkingAcc = [[] for _ in range(len(bboxes))]
@@ -62,7 +62,8 @@ def applyBBoxes(frame):
                 frame = frame[y:y+h, x:x+w]
             elif sc.facesMode in [Modes.SFR_ROI_M_ER, Modes.VJFR_ROI_M_ER]:
                 subframe = frame[y:y+h, x:x+w]
-                sc.emotionIndex = detectEmo(subframe, sc.emotionsModel)
+                if sc.counter == 0:
+                    sc.emotionIndex = detectEmo(subframe, sc.emotionsModel)
                 if sc.facesMode == Modes.SFR_ROI_M_ER: x, y, w, h = VJFR_to_SFR(x, y, w, h, frame)
                 frame = frame[y:y+h, x:x+w]
             elif sc.facesMode == Modes.VJFR_ROI_C:

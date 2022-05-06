@@ -25,7 +25,7 @@ def init():
   dim = 32
   dimWin = 640
   mLevels = 16
-  simode = Simode.BSM
+  simode = Simode.ASM
   facesMode = Modes.SFR_ROI_M_ER
   cache = {}
 
