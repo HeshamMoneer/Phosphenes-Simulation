@@ -9,7 +9,6 @@ def switch_face(event, x, y, flags, *params):
     if event == cv2.EVENT_LBUTTONUP:
         sc.faceIndex += 1
     if event == cv2.EVENT_LBUTTONDBLCLK:
-        print('here')
         sc.skip_enhancements_flag = not sc.skip_enhancements_flag
         sc.counter = 0
 

@@ -29,7 +29,7 @@ def updateBBoxes(frame):
         return
     if sc.counter == 0:
         #scaleFactor & minNeighbors can make detection faster but compromise accuracy
-        bboxes = sc.classifiers[0].detectMultiScale(frame)
+        bboxes = sc.classifiers[0].detectMultiScale(frame, scaleFactor = 1.3)
         if sc.facesMode == Modes.DETECT_FACES_WITH_EYES:
             allEyes = []
             for x,y,w,h in bboxes:
