@@ -19,7 +19,7 @@ def init(fc = None, p = None):
   if p: predictor = p
   else: predictor = dlib.shape_predictor('caricaturing/utils/shape_predictor_68_face_landmarks.dat')
 
-  avg = cv2.imread('caricaturing/images/aligned_images/avgF.png')
+  avg = cv2.imread('caricaturing/images/aligned_images/avg.png')
   avg, _ = detect_face(avg)
   avg = cv2.resize(avg, (160, 160))
 
