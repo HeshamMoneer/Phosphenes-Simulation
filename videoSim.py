@@ -45,9 +45,14 @@ def vSim(cap):
 
 def main():
     sc.init()
-    print("Enter Video number: ", end ="")
-    vidNumber = eval(input())
-    cap = cv2.VideoCapture('./experiment/tests/G' + str(vidNumber) + '/Identity test.mp4' if vidNumber > 0 else 0) # vidNumber <= 0 opens the webcam
+    print("Enter Experiment type: ", end ="")
+    experiment_type = input()
+    path = './experiment/tests/'
+    if experiment_type.isnumeric():
+        path += 'G' + experiment_type + '/Identity test.mp4'
+    else:
+        path += experiment_type + '.mp4'
+    cap = cv2.VideoCapture(path) # vidNumber <= 0 opens the webcam
     vSim(cap)
 
 if __name__ == '__main__':
