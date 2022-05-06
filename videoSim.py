@@ -8,6 +8,10 @@ from bboxes import (updateBBoxes, applyBBoxes)
 def switch_face(event, x, y, flags, *params):
     if event == cv2.EVENT_LBUTTONUP:
         sc.faceIndex += 1
+    if event == cv2.EVENT_LBUTTONDBLCLK:
+        print('here')
+        sc.skip_enhancements_flag = not sc.skip_enhancements_flag
+        sc.counter = 0
 
 def vSim(cap):
     fps = cap.get(cv2.CAP_PROP_FPS) # get the original video FPS
@@ -25,8 +29,9 @@ def vSim(cap):
         startTime = time.time()
         
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        updateBBoxes(frame)
-        frame = applyBBoxes(frame)
+        if not sc.skip_enhancements_flag:
+            updateBBoxes(frame)
+            frame = applyBBoxes(frame)
         frame = pSim(frame)
         cv2.imshow(sc.windowName, frame)
         

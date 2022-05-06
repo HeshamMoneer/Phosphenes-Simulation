@@ -52,8 +52,10 @@ def init():
   if simode == Simode.ACM or simode == Simode.ASM: gArr = gaussArr(radius)
   else: gArr = None
 
-  global ur, classifiers
+  global ur, counter, skip_enhancements_flag, classifiers
+  counter = 0
   ur = 5
+  skip_enhancements_flag = False
 
   faces_classifier = cv2.CascadeClassifier('classifiers/cc.xml')
   eyes_classifier, predictor = None, None
@@ -67,9 +69,8 @@ def init():
 
   classifiers = [faces_classifier, eyes_classifier, predictor]
 
-  global bboxes, counter, windowName
+  global bboxes, windowName
   bboxes = []
-  counter = 0
   windowName = 'Phosphenated ' + simode.name + ' & ' + facesMode.name
 
   global talkingAcc, talkingModel, talkingScaler
