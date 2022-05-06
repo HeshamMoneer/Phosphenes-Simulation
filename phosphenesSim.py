@@ -42,7 +42,7 @@ def pSim(img):
     img = prep(img) # image preprocessing
     phosphenes = np.zeros((sc.dimWin, sc.dimWin, 1), dtype=np.uint8) # pixel grid that displays phosphenes
 
-    if sc.facesMode == Modes.SFR_ROI_M_ER:
+    if sc.facesMode == Modes.SFR_ROI_M_ER or sc.facesMode == Modes.VJFR_ROI_M_ER:
         print(str(sc.emotionIndex) + " " +sc.emotion_dict[sc.emotionIndex], end='\r')
         binary = format(sc.emotionIndex, '03b')
         for i in range(len(binary)):
