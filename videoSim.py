@@ -8,9 +8,11 @@ from bboxes import (updateBBoxes, applyBBoxes)
 def switch_face(event, x, y, flags, *params):
     if event == cv2.EVENT_LBUTTONUP:
         sc.faceIndex += 1
-    if event == cv2.EVENT_LBUTTONDBLCLK:
-        sc.skip_enhancements_flag = not sc.skip_enhancements_flag
-        sc.counter = 0
+
+def skip_enhancement():
+    sc.skip_enhancements_flag = not sc.skip_enhancements_flag
+    sc.counter = 0
+    sc.zoom_counter = 0
 
 def vSim(cap):
     fps = cap.get(cv2.CAP_PROP_FPS) # get the original video FPS
@@ -29,7 +31,9 @@ def vSim(cap):
         
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         if not sc.skip_enhancements_flag:
-            updateBBoxes(frame)
+            if sc.zoom_counter % 10 == 0:
+                updateBBoxes(frame)
+        if not sc.skip_enhancements_flag or sc.zoom_counter < 10:
             frame = applyBBoxes(frame)
         frame = pSim(frame)
         cv2.imshow(sc.windowName, frame)
@@ -39,7 +43,9 @@ def vSim(cap):
         elapsed_ms = int((endTime - startTime) * 1000)
         waiting_time = original_frame_ms - elapsed_ms
         if waiting_time <= 0 : waiting_time = 1
-        if cv2.waitKey(waiting_time) & 0xFF == ord('0'): break
+        character = cv2.waitKey(waiting_time)
+        if character == ord('o'): skip_enhancement()
+        if character == 27: break
     cap.release()
     cv2.destroyAllWindows()
 

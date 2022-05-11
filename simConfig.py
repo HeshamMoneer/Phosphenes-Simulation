@@ -26,7 +26,7 @@ def init():
   dimWin = 640
   mLevels = 16
   simode = Simode.ASM
-  facesMode = Modes.VJFR_ROI_HE
+  facesMode = Modes.VJFR_ROI_M
   cache = {}
 
   global squareSide, radius, blurKernel, gArr
@@ -52,10 +52,11 @@ def init():
   if simode == Simode.ACM or simode == Simode.ASM: gArr = gaussArr(radius)
   else: gArr = None
 
-  global ur, counter, skip_enhancements_flag, classifiers
+  global ur, counter, skip_enhancements_flag, zoom_counter, classifiers
   counter = 0
   ur = 5
   skip_enhancements_flag = False
+  zoom_counter = 10
 
   faces_classifier = cv2.CascadeClassifier('classifiers/cc.xml')
   eyes_classifier, predictor = None, None
