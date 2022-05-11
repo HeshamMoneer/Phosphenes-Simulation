@@ -49,7 +49,10 @@ def main():
     experiment_type = input()
     path = './experiment/tests/'
     if experiment_type.isnumeric():
-        path += 'G' + experiment_type + '/Identity test.mp4'
+        if experiment_type == '0':
+            path = 0
+        else:
+            path += 'G' + experiment_type + '/Identity test.mp4'
     else:
         path += experiment_type + '.mp4'
     cap = cv2.VideoCapture(path) # vidNumber <= 0 opens the webcam
