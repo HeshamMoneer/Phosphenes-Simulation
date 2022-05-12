@@ -32,6 +32,7 @@ def drawPhosphene(phosphenes, tlf, color):
                 index = int(i * step)
                 cv2.circle(newCircle, center, i, 255 * sc.gArr[index], 1)
         
+        newCircle = blur(newCircle, sc.blurKernel)
         sc.cache[color] = newCircle
 
     x, y = tlf
@@ -40,7 +41,7 @@ def drawPhosphene(phosphenes, tlf, color):
 
 def pSim(img):
     img = prep(img) # image preprocessing
-    phosphenes = np.zeros((sc.dimWin, sc.dimWin, 1), dtype=np.uint8) # pixel grid that displays phosphenes
+    phosphenes = np.zeros((sc.dimWin, sc.dimWin), dtype=np.uint8) # pixel grid that displays phosphenes
 
     if sc.facesMode == Modes.SFR_ROI_M_ER or sc.facesMode == Modes.VJFR_ROI_M_ER:
         print(str(sc.emotionIndex) + " " +sc.emotion_dict[sc.emotionIndex], end='\r')
@@ -57,7 +58,7 @@ def pSim(img):
         tlf = (getTLF(x), getTLF(y)) # corresponding phosphene square top left corner
         drawPhosphene(phosphenes, tlf, color)
 
-    phosphenes = blur(phosphenes, sc.blurKernel)
+    # phosphenes = blur(phosphenes, sc.blurKernel)
 
     return phosphenes
 
