@@ -32,3 +32,7 @@ The performance can be further optimized by passing the circles cache between fr
 
 ## SFR-ROI magnification
 1. The nose position could be directly detected using landmark detection point @33
+
+## Phosphene simulation throughput optimization
+The throuput was improved from 170 fps to ~300 fps initially
+After caching the blur effects as well, the throuput jumped to ~500 fps
