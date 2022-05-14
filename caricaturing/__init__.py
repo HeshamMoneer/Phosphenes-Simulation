@@ -6,6 +6,7 @@ from .face_morph import generate_morph_frame
 
 def doMorphing(faceImg):
 	[faceImg, faceP] = generate_face_correspondences(faceImg, cc.avgS, cc.predictor)
+	cc.tri = make_delaunay(faceImg.shape, faceP)
 	return generate_morph_frame(faceImg, faceP, cc.avgP, cc.tri, cc.alpha)
 
 def caric(frame, faceOnly = True):
