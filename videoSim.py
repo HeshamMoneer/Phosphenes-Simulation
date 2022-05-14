@@ -8,6 +8,7 @@ from bboxes import (updateBBoxes, applyBBoxes)
 def switch_face(event, x, y, flags, *params):
     if event == cv2.EVENT_LBUTTONUP:
         sc.faceIndex += 1
+        sc.faceIndex = sc.faceIndex % len(sc.bboxes)
 
 def skip_enhancement():
     sc.skip_enhancements_flag = not sc.skip_enhancements_flag

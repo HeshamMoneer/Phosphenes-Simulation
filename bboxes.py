@@ -43,7 +43,7 @@ def updateBBoxes(frame):
     sc.counter = (sc.counter + 1) % sc.ur if sc.ur > 1 else 0 # update bboxes every ur frames
 
 def applyBBoxes(frame):
-    sc.faceIndex = 0 if sc.faceIndex >= len(sc.bboxes) else sc.faceIndex
+    sc.faceIndex = len(sc.bboxes) - 1 if sc.faceIndex >= len(sc.bboxes) else sc.faceIndex
 
     if sc.facesMode in [Modes.DETECT_ALL_FACES, Modes.DETECT_FACES_WITH_EYES]: 
         for x,y,w,h in sc.bboxes:
