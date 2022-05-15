@@ -3,6 +3,7 @@ import cv2
 from . import caric_config as cc
 from .face_landmark_detection import generate_face_correspondences
 from .face_morph import generate_morph_frame
+from .delaunay_triangulation import make_delaunay
 
 def doMorphing(faceImg):
 	[faceImg, faceP] = generate_face_correspondences(faceImg, cc.avgS, cc.predictor)

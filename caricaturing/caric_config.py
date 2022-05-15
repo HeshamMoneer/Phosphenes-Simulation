@@ -26,8 +26,15 @@ def init(fc = None, p = None):
   avgP = generate_face_land_marks(avg, predictor) # average landmarks
   avgS = avg.shape # average shape
 
-  tri = make_delaunay(avgS, avgP)
-  alpha = 1
+  tri = None #make_delaunay(avgS, avgP)
+  alpha = 0.6 
+  '''
+  We selected 60% as the highest caricature level because Irons et al. (2014) found caricature
+  advantages up to this level; note that higher caricature strengths
+  tend to produce morphing artifacts in the image, and eventually
+  will make the faces distorted beyond the range perceived as nor-
+  mal for real faces
+  '''
 
 def detect_face(img):
   if len(img.shape) > 2 :
