@@ -67,7 +67,7 @@ def applyBBoxes(frame):
                 frame = frame[y:y+h, x:x+w]
             elif sc.facesMode in [Modes.SFR_ROI_M_ER, Modes.VJFR_ROI_M_ER]:
                 subframe = frame[y:y+h, x:x+w]
-                if sc.counter == 0:
+                if sc.counter == 1:
                     sc.emotionIndex = detectEmo(subframe, sc.emotionsModel)
                 if sc.facesMode == Modes.SFR_ROI_M_ER: x, y, w, h = VJFR_to_SFR(x, y, w, h, frame)
                 frame = frame[y:y+h, x:x+w]
