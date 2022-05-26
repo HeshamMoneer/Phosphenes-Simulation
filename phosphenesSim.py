@@ -60,7 +60,15 @@ def pSim(img):
 
     # phosphenes = blur(phosphenes, sc.blurKernel)
 
-    return phosphenes
+    return fixRatio(phosphenes)
+
+def fixRatio(img):
+    dim1 = img.shape[0]
+    dim2 = int(1.779 * dim1)
+    diff = (dim2 - dim1)//2
+    res = np.zeros((dim1, dim2), dtype=np.uint8)
+    res[:,diff:dim1+diff] = img
+    return res
 
 def main():
     sc.init()

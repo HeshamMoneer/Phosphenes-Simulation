@@ -4,20 +4,20 @@ import enum
 # All possible modes must be properly defined
 
 class Modes(enum.Enum): # Face Detection mode
-    NOTHING = 0 #DLR or control group
+    NOTHING = 0 ### 5
     DETECT_ALL_FACES = 1
     BRIGHTEN_FIRST_FACE = 2
     DETECT_FACES_WITH_EYES = 3
     DETECT_FACE_FEATURES = 4
-    VJFR_ROI_M = 5 ###
+    VJFR_ROI_M = 5 ### 5
     SFR_ROI_M = 6
-    VJFR_ROI_C = 7 ###
+    VJFR_ROI_C = 7 ### 5
     SFR_ROI_HE = 8
     SFR_ROI_M_TD = 9
     SFR_ROI_M_ER = 10
-    VJFR_ROI_M_TD = 11 ###
-    VJFR_ROI_M_ER = 12 ###
-    VJFR_ROI_HE = 13 ###
+    VJFR_ROI_M_TD = 11 ### 5
+    VJFR_ROI_M_ER = 12 ### 5
+    VJFR_ROI_HE = 13 ### 5
 
 
 class Simode(enum.Enum): # Simulation mode

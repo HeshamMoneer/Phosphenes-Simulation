@@ -4,8 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [scripts]
-vSim = "bash -c \"python3 videoSim.py 2> /dev/null\""
-pSim = "bash -c \"python3 phosphenesSim.py 2> /dev/null\""
+vSim = "bash -c \"python videoSim.py 2> /dev/null\""
+pSim = "bash -c \"python phosphenesSim.py 2> /dev/null\""
 
 [packages]
 opencv-python = "*"
@@ -20,4 +20,4 @@ scikit-image = "*"
 [dev-packages]
 
 [requires]
-python_version = "3.8"
+python_version = "3.10"

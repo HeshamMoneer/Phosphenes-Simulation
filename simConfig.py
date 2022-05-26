@@ -26,7 +26,7 @@ def init():
   dimWin = 640
   mLevels = 16
   simode = Simode.ASM
-  facesMode = Modes.VJFR_ROI_M
+  facesMode = Modes.VJFR_ROI_C
   cache = {}
 
   global squareSide, radius, blurKernel, gArr

@@ -36,3 +36,6 @@ The performance can be further optimized by passing the circles cache between fr
 ## Phosphene simulation throughput optimization
 The throuput was improved from 170 fps to ~300 fps initially
 After caching the blur effects as well, the throuput jumped to ~500 fps
+
+## Cite the repo on Github
+https://citation-file-format.github.io/
