@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+title: >-
+  Eye Detection and Face Recognition for Visual
+  Prostheses
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Hesham
+    email: hesham.moneer@outlook.com
+    family-names: Moneer
+    name-particle: Hesham
+    affiliation: German University in Cairo
