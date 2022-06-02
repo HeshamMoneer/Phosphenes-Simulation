@@ -1,98 +1,82 @@
 import cv2
 import numpy as np
-from gaussianBlur import blur
-from enums import (Simode)
-from preprocessing import prep
-from gaussArray import gaussArr
 import time
 
-def drawPhosphene(phosphenes, center, radius, color, gArr, simode = Simode.BCM):
+import simConfig as sc
+from gaussianBlur import blur
+from enums import (Simode, Modes)
+from preprocessing import prep
+
+def drawPhosphene(phosphenes, tlf, color):
     color = int(color)
 
-    if simode == Simode.BCM:
-        cv2.circle(phosphenes, center, radius, color, -1)  # -1 means solid circle
+    if not color in sc.cache:
+        newCircle = np.zeros((sc.squareSide, sc.squareSide, 1), dtype=np.uint8)
+        center = (sc.squareSide//2, sc.squareSide//2)
 
-    elif simode == Simode.BSM:
-        curRadius = (radius*color)//255
-        cv2.circle(phosphenes, center, curRadius, 255, -1)  # -1 means solid circle
+        if sc.simode == Simode.BCM:
+            cv2.circle(newCircle, center, sc.radius, color, -1)
 
-    elif simode == Simode.ACM:
-        for i in range(radius):
-            cv2.circle(phosphenes, center, i, color * gArr[i], 1)
+        elif sc.simode == Simode.BSM:
+            curRadius = (sc.radius*color)//255
+            cv2.circle(newCircle, center, curRadius, 255, -1)
 
-    elif simode == Simode.ASM:
-        curRadius = (radius*color)//255
-        step = len(gArr)/curRadius if curRadius > 0 else 0
-        for i in range(curRadius):
-            index = int(i * step)
-            cv2.circle(phosphenes, center, i, 255 * gArr[index], 1)
+        elif sc.simode == Simode.ACM:
+            for i in range(sc.radius):
+                cv2.circle(newCircle, center, i, color * sc.gArr[i], 1)
 
-'''
-Inputs:
-img: source image to be phosphenated
-dim: number of phosphenes -> 32 * 32 resulting phosphene image for example
-dimWin: phosphene image dimensions in pixels
-mLevels: number of modulation levels
-gArr: gauss array; needed if simode is ACM or ASM
-simode: simulation mode
-    could be gaussian blur (B) based or gaussian array (A) based
-    could be color moduled (CM) or size modulated (SM)
-'''
-def pSim(img, dim = 32, dimWin = 640, mLevels = 16, gArr = None, simode = Simode.BCM):
-    img = prep(img, dim, mLevels) # image preprocessing
-    phosphenes = np.zeros((dimWin, dimWin, 1), dtype=np.uint8) # pixel grid that displays phosphenes
-    squareSide = dimWin//dim # square pixels that will contain a phosphene
-    radius = 0
+        elif sc.simode == Simode.ASM:
+            curRadius = (sc.radius*color)//255
+            step = len(sc.gArr)/curRadius if curRadius > 0 else 0
+            for i in range(curRadius):
+                index = int(i * step)
+                cv2.circle(newCircle, center, i, 255 * sc.gArr[index], 1)
+        
+        newCircle = blur(newCircle, sc.blurKernel)
+        sc.cache[color] = newCircle
 
-    if simode == Simode.ACM or simode == Simode.ASM:
-        radius = int(squareSide * 0.7)
-        if gArr == None: gArr = gaussArr(radius)
+    x, y = tlf
+    phosphenes[y:y+sc.squareSide, x:x+sc.squareSide] = sc.cache[color]
 
-    elif simode == Simode.BCM:
-        radius = int(squareSide * 0.25)
 
-    elif simode == Simode.BSM:
-        radius = int(squareSide * 0.3)
-    
-    getCenter = lambda var : int(var * squareSide + squareSide/2) # get the center of phosphene square
+def pSim(img):
+    img = prep(img) # image preprocessing
+    phosphenes = np.zeros((sc.dimWin, sc.dimWin), dtype=np.uint8) # pixel grid that displays phosphenes
+
+    if sc.facesMode == Modes.SFR_ROI_M_ER or sc.facesMode == Modes.VJFR_ROI_M_ER:
+        print(str(sc.emotionIndex) + " " +sc.emotion_dict[sc.emotionIndex], end='\r')
+        binary = format(sc.emotionIndex, '03b')
+        for i in range(len(binary)):
+            img[0, i] = int(binary[i]) * 255
+
+    getTLF = lambda var : int(var * sc.squareSide) # get the top left corner of phosphene square
     it = np.nditer(img, flags=['multi_index'])
     while not it.finished:
         y, x = it.multi_index
         color = it[0]
         it.iternext()
-        center = (getCenter(x), getCenter(y)) # corresponding phosphene square center
-        drawPhosphene(phosphenes, center, radius, color, gArr, simode)
-    
-    blurKernel = 0
-    if simode == Simode.ACM or simode == Simode.ASM:
-        blurKernel = 3
+        tlf = (getTLF(x), getTLF(y)) # corresponding phosphene square top left corner
+        drawPhosphene(phosphenes, tlf, color)
 
-    elif simode == Simode.BCM or simode == Simode.BSM:
-        blurKernel = radius * 2
+    # phosphenes = blur(phosphenes, sc.blurKernel)
 
-    phosphenes = blur(phosphenes, blurKernel)
     return phosphenes
 
 def main():
+    sc.init()
+
     imgNumber = eval(input("Enter Image number: "))
     img = cv2.imread('./images/img' + str(imgNumber) + '.jpg',0) # read desired image in grey scale
-
-    # cv2.imshow("BCM", pSim(img, simode = Simode.BCM))
 
     start = time.time()
     counter = 0
     while time.time() - start < 1:
         counter += 1
-        img = pSim(img, simode = Simode.BSM)
-    end = time.time()
+        tmpImg = pSim(img)
 
     print(counter)
 
-    cv2.imshow("BSM", img)
-
-    # cv2.imshow("ACM", pSim(img, simode = Simode.ACM))
-
-    # cv2.imshow("ASM", pSim(img, simode = Simode.ASM))
+    cv2.imshow("BSM", tmpImg)
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()

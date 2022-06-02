@@ -1,17 +1,34 @@
-import numpy as np
-from cropper import squareCrop
-from modulator import modulate
 import cv2
+import numpy as np
 
-def prep(img, dim, mLevels):
-  img = squareCrop(img) # crop image to be a square; if not already a square
-  img = cv2.resize(img, (dim, dim)) # resize image to desired resolution; bilinear interpolation
-  img = np.vectorize(modulate)(img, 255, mLevels - 1) # modulate colors to given levels; SIMD applied
-  img = np.vectorize(contrastBrightness)(img, 2, 20)
+import simConfig as sc
+from modulator import modulate
+
+def prep(img):
+  # img = squareCrop(img) # crop image to be a square; if not already a square
+  img = squareFit(img)
+  img = cv2.resize(img, (sc.dim, sc.dim)) # resize image to desired resolution; bilinear interpolation
+  img = cv2.equalizeHist(img)
+  img = modulate(img, 255, sc.mLevels - 1) # modulate colors to given levels; SIMD applied
   return img
 
-def contrastBrightness(val, a, b):
-  return np.uint8(clip(a * val + b, 0, 255))
+def contrastBrightness(val, a, b): # a -> contrast, b -> brightness
+  return np.clip(a * np.uint16(val) + b, 0, 255)
 
-def clip(val, minVal, maxVal):
-  return max(minVal, min(val, maxVal))
+def squareCrop(img):
+  height, width = img.shape[0], img.shape[1]
+  if height == width: return img
+  dim = min([height, width])
+  sh = int(height/2 - dim /2)
+  sw = int(width/2 - dim /2)
+  return img[sh:sh+dim, sw:sw+dim]
+
+def squareFit(img):
+  height, width = img.shape[0], img.shape[1]
+  if height == width: return img
+  dim = max([height, width])
+  res = np.zeros((dim, dim), dtype=np.uint8)
+  sh = int((dim - height)/2)
+  sw = int((dim - width)/2)
+  res[sh:height+sh, sw:width+sw] = img
+  return res

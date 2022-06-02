@@ -4,7 +4,9 @@
 3. run **pip install --user pipenv**
 4. run **pipenv install**
 5. run **pipenv shell** to spawn a shell in the virtual env of the project; exit:ctrl+d
-6. run **python3 [Any].py**
+6. run **python3 [Any].py**  
+ANOTHER APPROACH  
+7. instead of spwaning a pipenv shell, you can run **pipenv run** + some script from the *pipfile*
 
 ## NOTES
 https://kezunlin.me/post/61d55ab4/  
@@ -15,16 +17,22 @@ To optimize circles drawing, draw each modulated circle first, then copy them in
 drawing a new one every time
 
 ## Additional notes
-BSM is the most favorable one due to the following reasons:  
-  1. BCM and BSM are in general faster to compute than ACM and ASM  
-  2. BSM shows a more realistic effect to phosphene in comparison to BCM  
-  3. Applying BSM to the same image many times accumulated does not change the phosphene effect  
-  4. Applying BCM to the same image many times accumulated, however, yields a white image
+Contrast brightness should always come before modulation
+The performance after optimization is ~300 frames per second
+The performance can be further optimized by passing the circles cache between frames
 
-3 & 4 describe the code below:
-```
-while time.time() - start < 1:
-        counter += 1
-        img = pSim(img, simode = Simode.BCM) 
-        # notice that img is repeatedly used as an input and an output to the simulation
-```
+## All optimizations that I worked on
+1. Used Gaussian blur kernel instead of pdf()  
+2. The faces are not detected in every frame but rather limited times in 1s (3 times/second)  
+3. switched to optimized numpy loops  
+4. cached circles to avoid calling the draw method of opencv many times  
+5. move gaussian effect to be done on phosphenes before caching did not show performance improvement
+6. saving cache between frames raised the throughput
+
+
+## SFR-ROI magnification
+1. The nose position could be directly detected using landmark detection point @33
+
+## Phosphene simulation throughput optimization
+The throuput was improved from 170 fps to ~300 fps initially
+After caching the blur effects as well, the throuput jumped to ~500 fps

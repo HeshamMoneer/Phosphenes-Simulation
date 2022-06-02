@@ -3,11 +3,19 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
+[scripts]
+vSim = "bash -c \"python3 videoSim.py 2> /dev/null\""
+pSim = "bash -c \"python3 phosphenesSim.py 2> /dev/null\""
+
 [packages]
 opencv-python = "*"
-matplotlib = "*"
 scipy = "*"
-numba = "*"
+cmake = "*"
+dlib = "*"
+opencv-contrib-python = "*"
+tensorflow = "*"
+sklearn = "*"
+scikit-image = "*"
 
 [dev-packages]
 

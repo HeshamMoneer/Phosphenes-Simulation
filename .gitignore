@@ -8,3 +8,12 @@ videos/*.mp4
 ML/.ipynb_checkpoints/*
 
 .vscode/*
+
+
+models
+test_images
+training_images
+
+aligned_images
+
+experiment
