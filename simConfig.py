@@ -15,7 +15,7 @@ dim: number of phosphenes = dim x dim
 dimWin: the window has a size = dimWin x dimWin
 mLevels: number of modulation levels (no. colors)
 simode: simulation mode
-faceMode: enhancement mode
+facesMode: enhancement mode
 ur: update rate
 '''
 
