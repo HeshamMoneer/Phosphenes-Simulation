@@ -1,7 +1,6 @@
 cff-version: 1.2.0
 title: >-
-  Eye Detection and Face Recognition for Visual
-  Prostheses
+  Enhanced Simulation of Prosthetic Vision
 message: >-
   If you use this software, please cite it using the
   metadata from this file.
@@ -12,4 +11,4 @@ authors:
     family-names: Moneer
     name-particle: Hesham
     affiliation: German University in Cairo
-medium: \url{https://github.com/HeshamMoneer/Phosphenes-Simulation}
+notes: https://github.com/HeshamMoneer/Phosphenes-Simulation
