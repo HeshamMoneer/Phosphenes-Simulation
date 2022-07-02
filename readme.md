@@ -1,3 +1,7 @@
+# Repository description
+- This repo contains the work described in the Thesis ***Eye Detection and Face Recognition for Visual Prostheses***
+- The thesis could be found in *./Thesis/Thesis.pdf* and in the same directory the thesis defense presentation could be found
+
 # To run the project
 1. clone the repo
 2. make sure to have python3 and pip commands on your local machine terminal
