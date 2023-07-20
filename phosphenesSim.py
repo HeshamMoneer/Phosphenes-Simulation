@@ -6,6 +6,7 @@ import simConfig as sc
 from gaussianBlur import blur
 from enums import (Simode, Modes)
 from preprocessing import prep
+from bboxes import updateBBoxes, applyBBoxes
 
 def drawPhosphene(phosphenes, tlf, color):
     color = int(color)
@@ -68,15 +69,11 @@ def main():
     imgNumber = eval(input("Enter Image number: "))
     img = cv2.imread('./images/img' + str(imgNumber) + '.jpg',0) # read desired image in grey scale
 
-    start = time.time()
-    counter = 0
-    while time.time() - start < 1:
-        counter += 1
-        tmpImg = pSim(img)
+    updateBBoxes(img)
+    tmpImg = applyBBoxes(img)
+    tmpImg = pSim(tmpImg)
 
-    print(counter)
-
-    cv2.imshow("BSM", tmpImg)
+    cv2.imshow("ACM", tmpImg)
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
