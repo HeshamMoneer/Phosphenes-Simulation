@@ -14,8 +14,8 @@ cmake = "*"
 dlib = "*"
 opencv-contrib-python = "*"
 tensorflow = "*"
-sklearn = "*"
 scikit-image = "*"
+scikit-learn = "*"
 
 [dev-packages]
 
