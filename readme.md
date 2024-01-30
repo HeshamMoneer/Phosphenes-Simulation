@@ -1,6 +1,8 @@
 # Repository description
-- This repo contains the work described in the Thesis ***Eye Detection and Face Recognition for Visual Prostheses***
-- The thesis could be found in *./Thesis/Thesis.pdf* and in the same directory the thesis defense presentation could be found
+- This repo contains the work described in the paper ***Enhancing Facial Recognition in Visual Prostheses using Region of Interest Magnification and Caricaturing***.
+- A copy of the published research paper could be found [here](./Paper/). 
+- The work is also described in the Thesis ***Eye Detection and Face Recognition for Visual Prostheses***.
+- The thesis could be found [here](./Thesis/).
 
 # To run the project
 1. clone the repo
