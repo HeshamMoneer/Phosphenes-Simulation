@@ -1,6 +1,6 @@
 # Repository description
 - This repo contains the work described in the paper ***Enhancing Facial Recognition in Visual Prostheses using Region of Interest Magnification and Caricaturing***.
-- A copy of the published research paper could be found [here](./Paper/), and the IEEE publication could be accessed [here](https://ieeexplore.ieee.org/document/10401409).
+- The IEEE publication could be accessed [here](https://ieeexplore.ieee.org/document/10401409).
 - The work is also described in the Thesis ***Eye Detection and Face Recognition for Visual Prostheses***.
 - The thesis could be found [here](./Thesis/).
 
